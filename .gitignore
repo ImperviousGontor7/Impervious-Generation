@@ -1,24 +1,50 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Dependencies
+node_modules/
+**/node_modules/
 
-node_modules
-dist
-dist-ssr
-*.local
+# Environment variables
+.env*
+**/.env*
+!.env.example
+!**/.env.example
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# Build output
+dist/
+**/dist/
+build/
+**/build/
+coverage/
+.vite/
+.cache/
+
+# Operating system
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+**/.DS_Store
+__MACOSX/
+Thumbs.db
+
+# Local development tools
+.vscode/
+.windsurf/
+.claude/
+.agents/
+
+# Local archives and accidental files
+/Archive*.zip
+/eslint
+/impervious-project@1.0.0
+
+# Generated Prisma
+/src/generated/prisma/
+
+# Large fallback asset, pending optimization
+/client/src/assets/fallback.png
+
+# Fonts without verified redistribution permissions
+/client/src/assets/fonts/01_Font Arab/
+/client/src/assets/fonts/Autograf (Script)/
+/client/src/assets/fonts/Visby (Body Copy)/
+/client/src/assets/fonts/Zhoro (Headline)/
+/client/src/assets/fonts/amagro/
+/client/src/assets/fonts/code_next/
+/client/src/assets/fonts/vera_humana_95/

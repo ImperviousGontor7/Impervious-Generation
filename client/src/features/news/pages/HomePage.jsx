@@ -1,0 +1,1476 @@
+import { useEffect, useState } from "react";
+
+import { Link } from "react-router-dom";
+
+import Trending from "../view_all/trending";
+
+import hero from "../../../assets/images/Jami Emas.webp";
+
+import { heroSlides } from "../data/home_main_slide";
+import { thisMonth } from "../data/month_st";
+import { monthAgo } from "../data/month_nd";
+import { rootSlides } from "../data/home_root_slide";
+import { behindTheEvent } from "../data/behind_the_events";
+import { firstMid } from "../data/first_mid";
+import { secondMid } from "../data/second_mid";
+import { categoryHome } from "../data/category_home";
+import { trendingHome } from "../data/trending_home";
+
+
+
+function Home() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Next
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % heroSlides.length);
+  };
+
+  // Previous
+  const prevSlide = () => {
+    setCurrentIndex(
+      (prev) => (prev - 1 + heroSlides.length) % heroSlides.length
+    );
+  };
+
+  // Dot Indicator
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
+  };
+
+  // Auto Slide
+  useEffect(() => {
+    if (!heroSlides.length) return;
+
+    const interval = setInterval(nextSlide, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Glow Effect
+  const handleMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+
+    card.style.setProperty("--x", `${e.clientX - rect.left}px`);
+    card.style.setProperty("--y", `${e.clientY - rect.top}px`);
+    card.style.setProperty("--opacity", "1");
+  };
+
+  const handleLeave = (e) => {
+    e.currentTarget.style.setProperty("--opacity", "0");
+  };
+
+  if (!heroSlides.length) return null;
+
+  return (
+    <div id="view-beranda" className="view-pane active">
+      <section className="relative w-full overflow-hidden">
+        <div
+          className="flex transition-transform duration-700 ease-in-out will-change-transform"
+          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        >
+          {heroSlides.map((slide, index) => (
+            <article
+              key={index}
+              className="
+    relative
+    min-w-full
+    overflow-hidden
+    aspect-video
+      min-h-[clamp(22rem,65vh,40rem)]
+  max-h-[clamp(40rem,75vh,70rem)]
+  "
+            >
+              <img
+                src={slide.image}
+                alt={slide.title}
+                className="absolute inset-0 h-full w-full object-cover object-center"
+              />
+
+
+              <div className="absolute inset-0 bg-black/55" />
+              <div className="absolute inset-0 bg-linear-to-t from-bg-main via-transparent to-transparent" />
+
+              <div className="relative z-10 flex h-full items-center justify-center px-[clamp(1rem,3vw,3rem)] pb-[clamp(1.5rem,5vw,5rem)] pt-[clamp(2rem,6vw,6rem)]">
+                <div className="max-w-[clamp(20rem,80vw,68rem)] text-center text-white">
+                  <p className="mb-[clamp(.5rem,1vw,1rem)] text-[clamp(.7rem,.9vw,.95rem)] font-medium uppercase tracking-[0.35em] text-white/70">
+                    {slide.subtitle}
+                  </p>
+
+                  <h1 className="mx-auto max-w-[clamp(18rem,78vw,58rem)] text-[clamp(2rem,7vw,6rem)] font-bold leading-[1.05]">
+                    {slide.title}
+                  </h1>
+
+                  <p className="mx-auto mt-[clamp(.9rem,1.5vw,1.4rem)] max-w-[clamp(18rem,56vw,42rem)] text-[clamp(.95rem,1.2vw,1.25rem)] leading-relaxed text-white/75">
+                    {slide.description}
+                  </p>
+
+                  <div className="mt-[clamp(1.25rem,2vw,2rem)] flex flex-wrap justify-center gap-[clamp(.75rem,1.5vw,1rem)]">
+                    <Link
+                      to={slide.buttonPrimary.href}
+                      className="
+                        inline-flex items-center justify-center
+                        rounded-full bg-white
+                        px-[clamp(1.25rem,3vw,2.5rem)]
+                        py-[clamp(.7rem,1vw,1rem)]
+                        text-[clamp(.875rem,1vw,1rem)]
+                        font-semibold text-black
+                        transition duration-300
+                        hover:scale-105 hover:bg-white/90
+                        focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80
+                      "
+                    >
+                      {slide.buttonPrimary.text}
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <button
+          onClick={prevSlide}
+          aria-label="Previous slide"
+          className="
+            absolute left-3 top-1/2 z-20 -translate-y-1/2
+            rounded-full bg-black/40 px-3 py-3 text-white
+            backdrop-blur-md transition
+            hover:bg-black/60
+            focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80
+            sm:left-4 sm:px-4
+          "
+        >
+          <span className="block text-lg leading-none sm:text-xl">←</span>
+        </button>
+
+        <button
+          onClick={nextSlide}
+          aria-label="Next slide"
+          className="
+            absolute right-3 top-1/2 z-20 -translate-y-1/2
+            rounded-full bg-black/40 px-3 py-3 text-white
+            backdrop-blur-md transition
+            hover:bg-black/60
+            focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80
+            sm:right-4 sm:px-4
+          "
+        >
+          <span className="block text-lg leading-none sm:text-xl">→</span>
+        </button>
+
+        <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 sm:bottom-5">
+          {heroSlides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              aria-label={`Go to slide ${index + 1}`}
+              className={`h-2.5 rounded-full transition-all duration-300 ${currentIndex === index
+                ? "w-8 bg-white"
+                : "w-2.5 bg-white/40 hover:bg-white/70"
+                }`}
+            />
+          ))}
+        </div>
+      </section>
+      <div className="w-full max-w-500 mx-auto px-5 sm:px-8 -mt-24 relative z-10">
+        <div className="max-h-[clamp(50rem,45vw,75rem)] mx-auto my-25">
+          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
+            <span className="text-white">This Month</span>
+            <span className="text-white-500"> - Month 1</span>
+          </h3>
+          <div className="overflow-x-auto scrollbar-hidden pt-5">
+
+            <div className="flex gap-6 snap-x snap-mandatory pb-5">
+
+              {thisMonth.map((item) => (
+
+                <Link
+                  key={item.id}
+                  to={item.link}
+                  onMouseMove={handleMove}
+                  onMouseLeave={handleLeave}
+                  className="
+                glow-card
+                shrink-0
+                snap-start
+
+                w-[clamp(18rem,22vw,30rem)] 
+                aspect-4/5
+
+                overflow-hidden
+                rounded-3xl
+
+                border
+                border-white/10
+
+                bg-choco
+
+                transition-all
+                duration-250
+
+                hover:-translate-y-3
+                hover:shadow-2xl
+              "
+                >
+
+                  {/* IMAGE */}
+
+                  <div className="relative h-[70%]">
+                    <img src={hero}
+                      alt="Hero" className="block w-full h-full object-cover selected-none" />
+                    <div className="absolute inset-0 translate-y-px w-full 
+                h-full bg-linear-to-t from-choco to-choco/25" />
+                  </div>
+
+                  {/* OVERLAY */}
+
+                  <div
+                    className="
+                  absolute
+                  inset-0
+
+                  bg-linear-to-t
+                  from-choco
+                  via-choco/35
+                  to-transparent
+                "
+                  />
+
+                  {/* CONTENT */}
+
+                  <div
+                    className="
+                  absolute
+                  inset-0
+                  z-10
+
+                  flex
+                  flex-col
+                  justify-end
+
+                  p-5
+                "
+                  >
+
+
+                    <div className="-translate-y-[clamp(0.75rem,2.5vw,5rem)]">
+
+                      {/* Tag */}
+                      <div className="flex items-center mb-[clamp(0.75rem,1vw,1.25rem)]">
+
+                        <span
+                          className="
+                        inline-flex
+                        items-center
+                        justify-center
+
+                        h-[clamp(2rem,2.2vw,2.5rem)]
+                        px-[clamp(1rem,1vw,1.5rem)]
+
+                        rounded-full
+                        bg-honey/85
+
+                        text-[clamp(0.75rem,0.75vw,1.25rem)]
+                        font-semibold
+                        tracking-wide
+                        text-white
+                        whitespace-nowrap
+                      "
+                        >
+                          {item.category}
+                        </span>
+
+                      </div>
+
+                      {/* Title */}
+
+                      <h2
+                        className="
+                    text-white
+                    font-bold
+
+                    text-[clamp(1.5rem,2vw,2.5rem)]
+                    leading-tight
+
+                    line-clamp-2
+                  "
+                      >
+                        {item.title}
+                      </h2>
+                    </div>
+                    {/* Time */}
+
+                    <p
+                      className="
+                    mt-4
+
+                    text-[clamp(0.85rem,0.7vw,1.5rem)]
+
+                    text-white/60
+                  "
+                    >
+                      {item.date} • {item.time}
+                    </p>
+
+                  </div>
+
+                </Link>
+
+              ))}
+
+            </div>
+          </div>
+        </div>
+        <div className="max-h-[clamp(50rem,10vw,77.5rem)] my-25 mx-auto">
+          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
+            <span className="text-white">Month Ago</span>
+            <span className="text-white-500"> - Month 2</span>
+          </h3>
+          <div className="overflow-x-auto scrollbar-hidden pt-5">
+
+            <div className="flex gap-6 snap-x snap-mandatory pb-5">
+
+              {monthAgo.map((item) => (
+
+                <Link
+                  key={item.id}
+                  to={item.link}
+                  onMouseMove={handleMove}
+                  onMouseLeave={handleLeave}
+                  className="
+                glow-card
+                shrink-0
+                snap-start
+
+                w-[clamp(18rem,22vw,30rem)] 
+                aspect-4/5
+
+                overflow-hidden
+                rounded-3xl
+
+                border
+                border-white/10
+
+                bg-choco
+
+                transition-all
+                duration-250
+
+                hover:-translate-y-3
+                hover:shadow-2xl
+              "
+                >
+
+                  {/* IMAGE */}
+
+                  <div className="relative h-[70%]">
+                    <img src={hero}
+                      alt="Hero" className="block w-full h-full object-cover selected-none" />
+                    <div className="absolute inset-0 translate-y-px w-full 
+                h-full bg-linear-to-t from-choco to-choco/25" />
+                  </div>
+
+                  {/* OVERLAY */}
+
+                  <div
+                    className="
+                  absolute
+                  inset-0
+
+                  bg-linear-to-t
+                  from-choco
+                  via-choco/35
+                  to-transparent
+                "
+                  />
+
+                  {/* CONTENT */}
+
+                  <div
+                    className="
+                  absolute
+                  inset-0
+                  z-10
+
+                  flex
+                  flex-col
+                  justify-end
+
+                  p-5
+                "
+                  >
+
+
+                    <div className="-translate-y-[clamp(0.75rem,2.5vw,5rem)]">
+
+                      {/* Tag */}
+                      <div className="flex items-center mb-[clamp(0.75rem,1vw,1.25rem)]">
+
+                        <span
+                          className="
+                        inline-flex
+                        items-center
+                        justify-center
+
+                        h-[clamp(2rem,2.2vw,2.5rem)]
+                        px-[clamp(1rem,1vw,1.5rem)]
+
+                        rounded-full
+                        bg-honey/85
+
+                        text-[clamp(0.75rem,0.75vw,1.25rem)]
+                        font-semibold
+                        tracking-wide
+                        text-white
+                        whitespace-nowrap
+                      "
+                        >
+                          {item.category}
+                        </span>
+
+                      </div>
+
+                      {/* Title */}
+
+                      <h2
+                        className="
+                    text-white
+                    font-bold
+
+                    text-[clamp(1.5rem,2vw,2.5rem)]
+                    leading-tight
+
+                    line-clamp-2
+                  "
+                      >
+                        {item.title}
+                      </h2>
+                    </div>
+                    {/* Time */}
+
+                    <p
+                      className="
+                    mt-4
+
+                    text-[clamp(0.85rem,0.7vw,1.5rem)]
+
+                    text-white/60
+                  "
+                    >
+                      {item.date} • {item.time}
+                    </p>
+
+                  </div>
+
+                </Link>
+
+              ))}
+
+            </div>
+          </div>
+        </div>
+        <section className="relative w-full overflow-hidden rounded-4xl border">
+          {/* heroSlides */}
+          <div
+            className="flex transition-transform duration-700 ease-in-out"
+            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          >
+            {rootSlides.map((slide, index) => (
+              <div
+                key={index}
+                className="relative min-w-full h-[clamp(20rem,50vh,60rem)] overflow-hidden"
+              >
+                <img
+                  src={slide.image}
+                  alt={slide.title}
+                  className="absolute inset-0 h-full w-full object-cover object-center"
+                />
+
+                <div className="absolute inset-0 bg-black/60" />
+                <div className="absolute inset-0 bg-linear-to-r from-bg-main via-[#0d0500]/75 to-transparent" />
+
+                <div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center px-4">
+                  <div className="max-w-4xl text-center text-white">
+                    <p className="mb-4 text-sm tracking-[0.5em] text-white/70">
+                      {slide.subtitle}
+                    </p>
+
+                    <h1 className="text-[clamp(2.8rem,7vw,6rem)] font-bold leading-tight">
+                      {slide.title}
+                    </h1>
+
+                    <p className="mx-auto mt-5 max-w-2xl text-[clamp(1rem,1.2vw,1.25rem)] leading-relaxed text-white/75">
+                      {slide.description}
+                    </p>
+
+                    <div className="mt-8 flex flex-wrap justify-center gap-4">
+                      <Link
+                        to={slide.buttonPrimary.href}
+                        className="
+rounded-full
+bg-white
+px-[clamp(1.5rem,3vw,2.5rem)]
+py-[clamp(0.75rem,1vw,1rem)]
+text-[clamp(0.875rem,1vw,1rem)]
+font-semibold
+text-black
+transition
+hover:scale-105
+hover:bg-white/90
+"
+                      >
+                        {slide.buttonPrimary.text}
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* PREV BUTTON */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/40 px-4 py-3 text-white backdrop-blur-md transition hover:bg-black/60"
+            aria-label="Previous slide"
+          >
+            ←
+          </button>
+
+          {/* NEXT BUTTON */}
+          <button
+            onClick={nextSlide}
+            className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/40 px-4 py-3 text-white backdrop-blur-md transition hover:bg-black/60"
+            aria-label="Next slide"
+          >
+            →
+          </button>
+
+          {/* DOT INDICATOR */}
+          <div className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2">
+            {rootSlides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                aria-label={`Go to slide ${index + 1}`}
+                className={`h-2.5 rounded-full transition-all duration-300 ${currentIndex === index
+                  ? "w-8 bg-white"
+                  : "w-2.5 bg-white/40 hover:bg-white/70"
+                  }`}
+              />
+            ))}
+          </div>
+        </section>
+        <div className="max-h-[clamp(50rem,45vw,75rem)] w-full mx-auto my-25">
+          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] text-white mb-5">Behind The Events</h3>
+          <div className="overflow-x-auto scrollbar-hidden pt-5">
+
+            <div className="flex gap-6 snap-x snap-mandatory pb-5">
+
+              {behindTheEvent.map((item) => (
+
+                <Link
+                  key={item.id}
+                  to={item.link}
+                  onMouseMove={handleMove}
+                  onMouseLeave={handleLeave}
+                  className="
+                glow-card
+                shrink-0
+                snap-start
+
+                w-[clamp(18rem,22vw,30rem)] 
+                aspect-4/5
+
+                overflow-hidden
+                rounded-3xl
+
+                border
+                border-white/10
+
+                bg-choco
+
+                transition-all
+                duration-250
+
+                hover:-translate-y-3
+                hover:shadow-2xl
+              "
+                >
+
+                  {/* IMAGE */}
+
+                  <div className="relative h-[70%]">
+                    <img src={hero}
+                      alt="Hero" className="block w-full h-full object-cover selected-none" />
+                    <div className="absolute inset-0 translate-y-px w-full 
+                h-full bg-linear-to-t from-choco to-choco/25" />
+                  </div>
+
+                  {/* OVERLAY */}
+
+                  <div
+                    className="
+                  absolute
+                  inset-0
+
+                  bg-linear-to-t
+                  from-choco
+                  via-choco/35
+                  to-transparent
+                "
+                  />
+
+                  {/* CONTENT */}
+
+                  <div
+                    className="
+                  absolute
+                  inset-0
+                  z-10
+
+                  flex
+                  flex-col
+                  justify-end
+
+                  p-5
+                "
+                  >
+
+
+                    <div className="-translate-y-[clamp(0.75rem,2.5vw,5rem)]">
+
+                      {/* Tag */}
+                      <div className="flex items-center mb-[clamp(0.75rem,1vw,1.25rem)]">
+
+                        <span
+                          className="
+                        inline-flex
+                        items-center
+                        justify-center
+
+                        h-[clamp(2rem,2.2vw,2.5rem)]
+                        px-[clamp(1rem,1vw,1.5rem)]
+
+                        rounded-full
+                        bg-honey/85
+
+                        text-[clamp(0.75rem,0.75vw,1.25rem)]
+                        font-semibold
+                        tracking-wide
+                        text-white
+                        whitespace-nowrap
+                      "
+                        >
+                          {item.category}
+                        </span>
+
+                      </div>
+
+                      {/* Title */}
+
+                      <h2
+                        className="
+                    text-white
+                    font-bold
+
+                    text-[clamp(1.5rem,2vw,2.5rem)]
+                    leading-tight
+
+                    line-clamp-2
+                  "
+                      >
+                        {item.title}
+                      </h2>
+                    </div>
+                    {/* Time */}
+
+                    <p
+                      className="
+                    mt-4
+
+                    text-[clamp(0.85rem,0.7vw,1.5rem)]
+
+                    text-white/60
+                  "
+                    >
+                      {item.date} • {item.time}
+                    </p>
+
+                  </div>
+
+                </Link>
+
+              ))}
+
+            </div>
+          </div>
+        </div>
+        <section
+          className="
+    glow-card
+
+    w-full
+
+    rounded-4xl
+
+    border
+    border-white/10
+
+    bg-choco
+
+    overflow-hidden
+
+    px-[clamp(1.5rem,4vw,3rem)]
+    py-[clamp(2rem,5vw,4rem)]
+
+    my-[clamp(4rem,8vw,7rem)]
+  "
+          onMouseMove={handleMove}
+          onMouseLeave={handleLeave}
+        >
+
+          {/* Section Label */}
+
+          <div className="mb-[clamp(2rem,4vw,3rem)]">
+
+            <p
+              className="
+        uppercase
+
+        tracking-[0.5em]
+
+        text-marigold
+
+        font-semibold
+
+        text-[clamp(0.8rem,1.5vw,1.5rem)]
+      "
+            >
+              Gontor Knowledge
+            </p>
+
+            <div className="mt-3 h-px w-full bg-white/10" />
+
+          </div>
+
+          {/* Content */}
+
+          <div
+            className="
+      grid
+
+      grid-cols-1
+      md:grid-cols-[1.1fr_1fr]
+
+      gap-[clamp(2rem,5vw,5rem)]
+
+      items-center
+    "
+          >
+
+            {/* IMAGE */}
+
+            <div
+              className="
+        overflow-hidden
+
+        rounded-[1.75rem]
+
+        border
+        border-white/10
+
+        aspect-4/3
+      "
+            >
+
+              <img
+                src={hero}
+                alt="Hero"
+
+                className="
+          h-full
+          w-full
+
+          object-cover
+
+          transition-all
+          duration-500
+
+          hover:scale-105
+        "
+              />
+
+            </div>
+
+            {/* ARTICLE */}
+
+            <div className="flex flex-col h-full">
+
+              {/* Badge */}
+              <span className="inline-flex w-fit items-center rounded-full bg-white/10 backdrop-blur-xl border border-white/10 px-4 py-2 text-[clamp(.75rem,.8vw,1rem)] font-semibold text-white">
+                FEATURED ARTICLE
+              </span>
+
+              {/* Title */}
+              <h2
+                className="
+      mt-6
+      font-bold
+      leading-tight
+      text-[clamp(2rem,3vw,3.5rem)]
+    "
+              >
+                Apa Rahasia Jadi Sukses?
+              </h2>
+
+              {/* Description */}
+              <div className="mt-6 space-y-5">
+
+                <p
+                  className="
+        leading-relaxed
+        text-white/70
+        text-[clamp(1rem,1.15vw,1.15rem)]
+      "
+                >
+                  Kesuksesan bukan hanya berasal dari kecerdasan,
+                  tetapi juga dari disiplin, istiqamah, dan kemauan
+                  untuk terus belajar. Nilai-nilai inilah yang
+                  dibangun dalam kehidupan santri melalui aktivitas
+                  sehari-hari, organisasi, serta pembelajaran yang
+                  konsisten.
+                </p>
+
+                <p
+                  className="
+        leading-relaxed
+        text-white/70
+        text-[clamp(1rem,1.15vw,1.15rem)]
+      "
+                >
+                  Gontor Knowledge menghadirkan berbagai cerita,
+                  pengalaman, dan wawasan yang menginspirasi agar
+                  setiap pembaca dapat mengambil pelajaran dari
+                  perjalanan para santri dan civitas pondok.
+                </p>
+
+              </div>
+
+              {/* Button */}
+              <div className="pt-[clamp(1.5rem,3vw,2.5rem)]">
+                <button
+                  className="
+      inline-flex
+      w-fit
+
+      items-center
+      gap-3
+
+      rounded-full
+
+      text-[clamp(0.75rem,1vw,1rem)]
+      border
+      border-marigold
+px-[clamp(0.9rem,1.2vw,1.25rem)]
+py-[clamp(0.45rem,0.7vw,0.7rem)]
+      font-semibold
+
+      text-marigold
+
+      transition-all
+      duration-300
+
+      hover:bg-marigold
+      hover:text-black
+    "
+                >
+                  Read Article →
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+        <div className="max-h-[clamp(50rem,45vw,75rem)] w-full mx-auto my-25">
+          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] text-white mb-5">First Mid Year</h3>
+          <div className="overflow-x-auto scrollbar-hidden pt-5">
+
+            <div className="flex gap-6 snap-x snap-mandatory pb-5">
+
+              {firstMid.map((item) => (
+
+                <Link
+                  key={item.id}
+                  to={item.link}
+                  onMouseMove={handleMove}
+                  onMouseLeave={handleLeave}
+                  className="
+                glow-card
+                shrink-0
+                snap-start
+
+                w-[clamp(18rem,22vw,30rem)] 
+                aspect-4/5
+
+                overflow-hidden
+                rounded-3xl
+
+                border
+                border-white/10
+
+                bg-choco
+
+                transition-all
+                duration-250
+
+                hover:-translate-y-3
+                hover:shadow-2xl
+              "
+                >
+
+                  {/* IMAGE */}
+
+                  <div className="relative h-[70%]">
+                    <img src={hero}
+                      alt="Hero" className="block w-full h-full object-cover selected-none" />
+                    <div className="absolute inset-0 translate-y-px w-full 
+                h-full bg-linear-to-t from-choco to-choco/25" />
+                  </div>
+
+                  {/* OVERLAY */}
+
+                  <div
+                    className="
+                  absolute
+                  inset-0
+
+                  bg-linear-to-t
+                  from-choco
+                  via-choco/35
+                  to-transparent
+                "
+                  />
+
+                  {/* CONTENT */}
+
+                  <div
+                    className="
+                  absolute
+                  inset-0
+                  z-10
+
+                  flex
+                  flex-col
+                  justify-end
+
+                  p-5
+                "
+                  >
+
+
+                    <div className="-translate-y-[clamp(0.75rem,2.5vw,5rem)]">
+
+                      {/* Tag */}
+                      <div className="flex items-center mb-[clamp(0.75rem,1vw,1.25rem)]">
+
+                        <span
+                          className="
+                        inline-flex
+                        items-center
+                        justify-center
+
+                        h-[clamp(2rem,2.2vw,2.5rem)]
+                        px-[clamp(1rem,1vw,1.5rem)]
+
+                        rounded-full
+                        bg-honey/85
+
+                        text-[clamp(0.75rem,0.75vw,1.25rem)]
+                        font-semibold
+                        tracking-wide
+                        text-white
+                        whitespace-nowrap
+                      "
+                        >
+                          {item.category}
+                        </span>
+
+                      </div>
+
+                      {/* Title */}
+
+                      <h2
+                        className="
+                    text-white
+                    font-bold
+
+                    text-[clamp(1.5rem,2vw,2.5rem)]
+                    leading-tight
+
+                    line-clamp-2
+                  "
+                      >
+                        {item.title}
+                      </h2>
+                    </div>
+                    {/* Time */}
+
+                    <p
+                      className="
+                    mt-4
+
+                    text-[clamp(0.85rem,0.7vw,1.5rem)]
+
+                    text-white/60
+                  "
+                    >
+                      {item.date} • {item.time}
+                    </p>
+
+                  </div>
+
+                </Link>
+
+              ))}
+
+            </div>
+          </div>
+        </div>
+        <div className="max-h-[clamp(50rem,45vw,75rem)] w-full  mx-auto my-25">
+          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] text-white mb-5">Second Mid Year</h3>
+          <div className="overflow-x-auto scrollbar-hidden pt-5">
+
+            <div className="flex gap-6 snap-x snap-mandatory pb-5">
+
+              {secondMid.map((item) => (
+
+                <Link
+                  key={item.id}
+                  to={item.link}
+                  onMouseMove={handleMove}
+                  onMouseLeave={handleLeave}
+                  className="
+                glow-card
+                shrink-0
+                snap-start
+
+                w-[clamp(18rem,22vw,30rem)] 
+                aspect-4/5
+
+                overflow-hidden
+                rounded-3xl
+
+                border
+                border-white/10
+
+                bg-choco
+
+                transition-all
+                duration-250
+
+                hover:-translate-y-3
+                hover:shadow-2xl
+              "
+                >
+
+                  {/* IMAGE */}
+
+                  <div className="relative h-[70%]">
+                    <img src={hero}
+                      alt="Hero" className="block w-full h-full object-cover selected-none" />
+                    <div className="absolute inset-0 translate-y-px w-full 
+                h-full bg-linear-to-t from-choco to-choco/25" />
+                  </div>
+
+                  {/* OVERLAY */}
+
+                  <div
+                    className="
+                  absolute
+                  inset-0
+
+                  bg-linear-to-t
+                  from-choco
+                  via-choco/35
+                  to-transparent
+                "
+                  />
+
+                  {/* CONTENT */}
+
+                  <div
+                    className="
+                  absolute
+                  inset-0
+                  z-10
+
+                  flex
+                  flex-col
+                  justify-end
+
+                  p-5
+                "
+                  >
+
+
+                    <div className="-translate-y-[clamp(0.75rem,2.5vw,5rem)]">
+
+                      {/* Tag */}
+                      <div className="flex items-center mb-[clamp(0.75rem,1vw,1.25rem)]">
+
+                        <span
+                          className="
+                        inline-flex
+                        items-center
+                        justify-center
+
+                        h-[clamp(2rem,2.2vw,2.5rem)]
+                        px-[clamp(1rem,1vw,1.5rem)]
+
+                        rounded-full
+                        bg-honey/85
+
+                        text-[clamp(0.75rem,0.75vw,1.25rem)]
+                        font-semibold
+                        tracking-wide
+                        text-white
+                        whitespace-nowrap
+                      "
+                        >
+                          {item.category}
+                        </span>
+
+                      </div>
+
+                      {/* Title */}
+
+                      <h2
+                        className="
+                    text-white
+                    font-bold
+
+                    text-[clamp(1.5rem,2vw,2.5rem)]
+                    leading-tight
+
+                    line-clamp-2
+                  "
+                      >
+                        {item.title}
+                      </h2>
+                    </div>
+                    {/* Time */}
+
+                    <p
+                      className="
+                    mt-4
+
+                    text-[clamp(0.85rem,0.7vw,1.5rem)]
+
+                    text-white/60
+                  "
+                    >
+                      {item.date} • {item.time}
+                    </p>
+
+                  </div>
+
+                </Link>
+
+              ))}
+
+            </div>
+          </div>
+        </div>
+        <div
+          className="
+        grid
+        grid-cols-1
+        md:grid-cols-[4fr_3fr]
+
+        gap-[clamp(1.5rem,2vw,3rem)]
+
+        my-[clamp(3rem,5vw,6rem)]
+      "
+        >
+
+          {/* ===================== TRENDING ===================== */}
+
+          <div
+            className="
+          glow-card
+
+          rounded-[clamp(1.5rem,2vw,2rem)]
+
+          border
+          border-white/10
+
+          backdrop-blur-md
+
+          p-[clamp(1.25rem,2vw,2rem)]
+        "
+            onMouseMove={handleMove}
+            onMouseLeave={handleLeave}
+          >
+
+            <Trending
+              title="Trending Now"
+              to="/trending"
+            />
+
+            <div className="mt-[clamp(1.5rem,2vw,2.25rem)] flex flex-col">
+
+              {trendingHome.map((item) => (
+
+                <Link
+                  key={item.id}
+                  to={item.link}
+                  className="
+                group
+
+                flex
+                items-center
+
+                text-[clamp(1.25rem,2vw,2.5rem)]
+                gap-[clamp(.75rem,1vw,1.5rem)]
+
+                py-[clamp(.85rem,1vw,1.25rem)]
+
+                border-b
+                border-white/10
+
+                last:border-none
+              "
+                >
+
+                  {/* Rank */}
+
+                  <span
+                    className="
+                  shrink-0
+
+                  w-[clamp(2.5rem,4vw,3.5rem)]
+
+                  text-[clamp(2rem,2.6vw,3rem)]
+
+                  font-black
+
+                  text-white/30
+
+                  transition-all
+
+                  duration-300
+
+                  group-hover:text-marigold
+                "
+                  >
+                    {item.rank}
+                  </span>
+
+                  {/* Thumbnail */}
+
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="
+                  shrink-0
+
+                  w-[clamp(5rem,8vw,7rem)]
+                  h-[clamp(4rem,6vw,5rem)]
+
+                  rounded-[clamp(.75rem,1vw,1rem)]
+
+                  object-cover
+
+                  transition-all
+                  duration-300
+
+                  group-hover:scale-105
+                "
+                  />
+
+                  {/* Text */}
+
+                  <div className="flex-1 min-w-0">
+
+                    <h4
+                      className="
+                    line-clamp-2
+
+                    text-white
+
+                    font-semibold
+
+                    text-[clamp(.95rem,1vw,1.15rem)]
+
+                    leading-snug
+
+                    transition-colors
+
+                    duration-300
+
+                    group-hover:text-marigold
+                  "
+                    >
+                      {item.title}
+                    </h4>
+
+                    <p
+                      className="
+                    mt-2
+
+                    text-[clamp(.75rem,.8vw,.9rem)]
+
+                    text-white/50
+                  "
+                    >
+                      {item.category}
+
+                      <span className="mx-2">•</span>
+
+                      {item.views}
+                    </p>
+
+                  </div>
+
+                </Link>
+
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* ===================== CATEGORY ===================== */}
+
+          <div
+            className="
+          glow-card
+
+          rounded-[clamp(1.5rem,2vw,2rem)]
+
+          border
+          border-white/10
+
+          backdrop-blur-md
+
+          p-[clamp(1.25rem,2vw,2rem)]
+        "
+            onMouseMove={handleMove}
+            onMouseLeave={handleLeave}
+          >
+
+            <Trending
+              title="Category"
+              to="/all"
+            />
+
+            <div
+              className="
+            mt-[clamp(1.5rem,2vw,2.25rem)]
+
+            space-y-[clamp(1rem,1.3vw,1.75rem)]
+          "
+            >
+
+              {categoryHome.map((item) => {
+
+                const Icon = item.icon;
+
+
+                return (
+
+                  <Link
+                    key={item.id}
+                    to={`/category/${item.name.toLowerCase()}`}
+
+                    className="
+                  group
+
+                  flex
+
+                  items-center
+
+                  gap-[clamp(.9rem,1.2vw,1.5rem)]
+                "
+                  >
+
+                    <div
+                      className="
+                    flex
+
+                    items-center
+
+                    justify-center
+
+                    shrink-0
+
+                    w-[clamp(2.8rem,3vw,3.4rem)]
+                    h-[clamp(2.8rem,3vw,3.4rem)]
+
+                    rounded-xl
+
+                    border
+
+                    transition-all
+
+                    duration-300
+
+                    group-hover:scale-110
+                  "
+                      style={{
+                        borderColor: item.color,
+                      }}
+                    >
+
+                      <Icon
+                        className="
+                      w-[clamp(1.1rem,1.4vw,1.4rem)]
+                      h-[clamp(1.1rem,1.4vw,1.4rem)]
+                    "
+                        style={{
+                          color: item.color,
+                        }}
+                      />
+
+                    </div>
+
+                    <span
+                      className="
+                    text-[clamp(.95rem,1vw,1.15rem)]
+
+                    font-medium
+
+                    text-white
+
+                    transition-colors
+
+                    duration-300
+
+                    group-hover:text-marigold
+                  "
+                    >
+                      {item.name}
+                    </span>
+
+                  </Link>
+
+                );
+
+              })}
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div >
+  )
+}
+
+export default Home;
