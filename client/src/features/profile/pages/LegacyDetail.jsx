@@ -146,7 +146,7 @@ function LegacyDetail() {
 
   if (!page) {
     return (
-      <main className="grid min-h-screen place-items-center bg-[#f5eee6] px-5 text-[#3c2b20]">
+      <main className="grid min-h-screen place-items-center px-5 text-[#3c2b20]">
         <div className="text-center">
           <p className="text-xs font-medium tracking-[0.28em] text-[#9b765a]">GONTOR ARCHIVE</p>
           <h1 className="mt-3 font-serif text-6xl">404</h1>
@@ -181,7 +181,7 @@ function LegacyDetail() {
   );
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#f5eee6] pb-16 text-[#38291f] selection:bg-[#c8a486]/40">
+    <main className="min-h-screen overflow-hidden pb-16 text-[#f5eee6] selection:bg-[#c8a486]/40">
       {/* 1. MAIN HERO */}
       <section className="mx-auto max-w-360 px-4 pt-4 sm:px-6 lg:px-8 lg:pt-6">
         <div className="group relative isolate flex min-h-82.5 items-end overflow-hidden rounded-[18px] bg-[#6d4a34] sm:min-h-97.5 lg:min-h-112.5">
@@ -229,7 +229,7 @@ function LegacyDetail() {
 
         {/* 3. SHORT QUOTE */}
         <div className="mx-auto mt-7 max-w-3xl px-3 text-center">
-          <p className="font-serif text-xl italic leading-snug text-[#4c3527] sm:text-2xl">
+          <p className="font-serif text-xl italic leading-snug text-[#f5eee6] sm:text-2xl">
             “{meta.quote}”
           </p>
           <div className="mx-auto mt-6 h-px max-w-2xl bg-[#ddc9b6]" />
