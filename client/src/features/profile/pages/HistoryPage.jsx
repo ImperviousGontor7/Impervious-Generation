@@ -209,12 +209,9 @@ function History() {
             <div className="rounded-3xl border border-white/8 bg-white/3 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.18)] backdrop-blur-xl sm:p-5 lg:rounded-l-none lg:p-6">
               <div className="mb-6 hidden items-center justify-between border-b border-white/6 pb-4 lg:flex">
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.35em] text-violet-200/80">Archive Navigation</p>
-                  <h2 className="mt-2 text-2xl font-semibold tracking-wide text-white">Timeline of Gontor</h2>
+                  <p className="text-[11px] uppercase tracking-[0.35em] text-violet-200/80">Timeline Archive</p>
+                  <h2 className="mt-2 text-2xl font-semibold tracking-wide text-white">History of Gontor</h2>
                 </div>
-                <span className="rounded-full border border-white/10 bg-black/20 px-4 py-2 text-xs tracking-[0.28em] text-slate-300/80">
-                  SCROLL CONTENT
-                </span>
               </div>
 
               <div className="space-y-5 sm:space-y-6">
