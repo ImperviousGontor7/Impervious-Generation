@@ -254,9 +254,6 @@ function History() {
                             <FiArrowRight className="transition-transform duration-200 group-hover:translate-x-0.5" />
                           </Link>
 
-                          <span className="text-xs tracking-[0.28em] text-slate-400/80">
-                            GONTOR ARCHIVE
-                          </span>
                         </div>
                       </div>
 
