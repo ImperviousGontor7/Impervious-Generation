@@ -44,10 +44,17 @@ jobs:
       - name: Build frontend
         run: npm run build
 
-      - name: Verify production build
+      -      - name: Verify production build
         run: |
           test -s dist/client/index.html
+          test -s dist/client/404.html
+          test -d dist/client/assets
+
           echo "Production build berhasil."
+          echo "index.html ditemukan."
+          echo "404.html ditemukan."
+          echo "Assets ditemukan."
+
           echo "Generated assets:"
           grep -Eo '(src|href)="[^"]+"' dist/client/index.html
 

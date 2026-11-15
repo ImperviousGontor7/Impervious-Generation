@@ -16,7 +16,7 @@
     "dev:server": "nodemon server/server.js",
     "start": "node server/server.js",
     "start:prod": "cross-env NODE_ENV=production node server/server.js",
-    "build": "cd client && vite build",
+    "build": "cd client && vite build && cd .. && node create-404.cjs",
     "preview": "cd client && vite preview",
     "prisma:generate": "prisma generate",
     "prisma:validate": "prisma validate",
