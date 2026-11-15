@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from "react";
 
-import Sidebar from "../gallery/sidebar";
-import Header from "../gallery/header";
-import Archive from "../gallery/archive";
-import Pagination from "../gallery/pagination";
+import Sidebar from "../gallery/Sidebar.jsx";
+import Header from "../gallery/Header.jsx";
+import Archive from "../gallery/Archive.jsx";
+import Pagination from "../gallery/Pagination.jsx";
 
 import {
   memoriesData,
