@@ -41,6 +41,10 @@ const HistoryPage = lazy(() =>
   import("../features/profile/pages/HistoryPage")
 );
 
+const LegacyDetail = lazy(() =>
+  import("../features/profile/pages/LegacyDetail")
+);
+
 const OurGenerationPage = lazy(() =>
   import(
     "../features/profile/pages/OurGenerationPage"
@@ -154,6 +158,11 @@ function AppRouter() {
           <Route
             path="history"
             element={<HistoryPage />}
+          />
+
+          <Route
+            path="legacy/:id"
+            element={<LegacyDetail />}
           />
 
           <Route
