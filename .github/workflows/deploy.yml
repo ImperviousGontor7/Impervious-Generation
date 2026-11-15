@@ -1,3 +1,4 @@
+
 name: Deploy Impervious Generation to GitHub Pages
 
 on:
@@ -44,7 +45,7 @@ jobs:
       - name: Build frontend
         run: npm run build
 
-      -      - name: Verify production build
+      - name: Verify production build
         run: |
           test -s dist/client/index.html
           test -s dist/client/404.html
@@ -61,7 +62,7 @@ jobs:
       - name: Upload website artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ./dist/client
+          path: dist/client
 
       - name: Deploy to GitHub Pages
         id: deployment
