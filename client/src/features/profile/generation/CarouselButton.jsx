@@ -7,8 +7,6 @@ function CarouselButton({ direction, onClick }) {
         grid place-items-center
         h-12 w-12 sm:h-14 sm:w-14
         rounded-full
-        border border-violet-300/60
-        bg-white/5
         text-violet-200
         backdrop-blur-md
         shadow-[0_0_0_1px_rgba(167,139,250,0.08),0_0_30px_rgba(168,85,247,0.12)]

@@ -172,7 +172,7 @@ function Home() {
           ))}
         </div>
       </section>
-      <div className="w-full max-w-500 mx-auto px-5 sm:px-8 -mt-24 relative z-10">
+      <div className="w-full max-w-500 mx-auto px-5 sm:px-8 my-15 relative z-10">
         <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
           <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
             First Mid Year
@@ -286,10 +286,10 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="w-full max-w-500 mx-auto px-5 sm:px-8 -mt-24 relative z-10">
+      <div className="w-full max-w-500 mx-auto px-5 sm:px-8 my-15 relative z-10">
         <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
           <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
-            First Mid Year
+            Second Mid Year
           </h3>
 
           <div className="scrollbar-hidden overflow-x-auto py-5">
@@ -492,7 +492,7 @@ hover:bg-white/90
             ))}
           </div>
         </section>
-        <div className="w-full max-w-500 mx-auto px-5 sm:px-8 -mt-24 relative z-10">
+        <div className="w-full max-w-500 mx-auto px-5 sm:px-8 my-15 relative z-10">
           <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
             <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
               Behind The Event
@@ -782,7 +782,7 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
         </section>
         <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
             <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
-              Behind The Event
+              Isidental - First Mid Year
             </h3>
 
             <div className="scrollbar-hidden overflow-x-auto py-5">
@@ -894,7 +894,7 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
           </div>
         <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
             <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
-              Behind The Event
+              Isidental - Second Mid Year
             </h3>
 
             <div className="scrollbar-hidden overflow-x-auto py-5">

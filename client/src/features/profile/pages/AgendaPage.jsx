@@ -271,7 +271,7 @@ function Agenda() {
         <div className="mx-auto my-[clamp(3rem,6vw,8rem)]">
           <div className="mx-auto my-25">
             <h3 className="mb-[clamp(1.5rem,2vw,2.75rem)] text-[clamp(1.25rem,1.8vw,2.5rem)]">
-              Upcoming Events
+              First Mid Year Journal
             </h3>
 
             <div className="scrollbar-hidden overflow-x-auto pt-[clamp(.5rem,1vw,1.5rem)]">
@@ -442,7 +442,7 @@ function Agenda() {
 
           <div className="mx-auto my-25">
             <h3 className="mb-[clamp(1.5rem,2vw,2.75rem)] text-[clamp(1.25rem,1.8vw,2.5rem)]">
-              Latest Events
+              Second Mid Year Journal
             </h3>
 
             <div className="scrollbar-hidden overflow-x-auto pt-[clamp(.5rem,1vw,1.5rem)]">

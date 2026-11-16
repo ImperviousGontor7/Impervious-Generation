@@ -13,7 +13,6 @@ import {
   logoMeanings,
   statusBoard,
   santriStats,
-  socials,
 } from "../generation/GenerationData";
 
 function OurGeneration() {
@@ -31,7 +30,7 @@ function OurGeneration() {
   return (
     <div className="min-h-screen text-white overflow-hidden">
       <div className="relative">
-        <Card className="overflow-hidden" id="home">
+        <Card className="overflow-hidden my-15" id="home">
           <div className="relative h-[clamp(20rem,50vh,60rem)] ">
             <img
               src={Shield}
@@ -57,11 +56,8 @@ function OurGeneration() {
           </div>
         </Card>
         <div className="w-full max-w-500 mx-auto px-5 sm:px-8 relative z-10">
-
           <main className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-
-
-            <Card className="p-4 sm:p-6 lg:p-8" id="about">
+            <Card className="p-4 sm:p-6 lg:p-8 rounded-xl border border-white/15 my-15" id="about">
               <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1.4fr] gap-5 lg:gap-8 items-center">
                 <div className="space-y-5">
                   <div>
@@ -73,29 +69,29 @@ function OurGeneration() {
 
                   <p className="text-sm sm:text-base lg:text-lg leading-8 text-white/80 text-justify">
                     Generation 6101 adalah angkatan yang dibentuk dari semangat,
-                    dedikasi, dan perjalanan panjang penuh makna. Kami hadir bukan
-                    hanya untuk belajar, tetapi untuk tumbuh, berproses, dan
-                    menjadi pribadi yang berkarakter serta bermanfaat bagi
+                    dedikasi, dan perjalanan panjang penuh makna. Kami hadir
+                    bukan hanya untuk belajar, tetapi untuk tumbuh, berproses,
+                    dan menjadi pribadi yang berkarakter serta bermanfaat bagi
                     lingkungan sekitar.
                   </p>
 
                   <p className="text-sm sm:text-base lg:text-lg leading-8 text-white/80 text-justify">
                     Kami percaya bahwa disiplin adalah fondasi, loyalitas adalah
                     kekuatan, dan kepemimpinan adalah arah. Dengan nilai-nilai
-                    tersebut, kami melangkah bersama menuju masa depan yang lebih
-                    baik.
+                    tersebut, kami melangkah bersama menuju masa depan yang
+                    lebih baik.
                   </p>
                 </div>
 
-                <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,85,247,0.18),transparent_45%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_40%)]" />
+                <div className="relative overflow-hidden">
+                  <div className="absolute inset-0" />
                   <div className="grid min-h-70 place-items-center p-4 sm:p-6">
-                    <div className="relative w-full overflow-hidden rounded-[22px] border border-white/10 bg-black/20 p-3">
-                      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),transparent)]" />
+                    <div className="relative w-full overflow-hidden p-3">
+                      <div className="absolute inset-0" />
                       <img
                         src={shieldLogo}
                         alt="Generation 6101 group or emblem"
-                        className="w-full max-h-130 object-contain rounded-[18px] grayscale contrast-110"
+                        className="w-full h-full object-contain rounded-2xl"
                       />
                     </div>
                   </div>
@@ -103,7 +99,7 @@ function OurGeneration() {
               </div>
             </Card>
 
-            <Card className="p-4 sm:p-6 lg:p-8" id="chiefs">
+            <Card className="p-4 sm:p-6 lg:p-8 rounded-xl border border-white/15 my-15" id="chiefs">
               <SectionTitle title="Chief of Generation" />
               <div className="mt-5 flex items-center justify-between gap-3">
                 <CarouselButton
@@ -125,14 +121,12 @@ function OurGeneration() {
                       className="snap-start min-w-[82%] sm:min-w-[48%] lg:min-w-[31%]"
                     >
                       <Card className="h-full p-4 sm:p-5">
-                        <div className="overflow-hidden rounded-[20px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(168,85,247,0.16),transparent_45%),rgba(255,255,255,0.03)]">
-                          <div className="flex h-65 sm:h-75 items-end justify-center p-3">
-                            <img
-                              src={chief.image}
-                              alt={chief.name}
-                              className="h-full w-full object-contain drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)]"
-                            />
-                          </div>
+                        <div className="relative aspect-3/4 w-full overflow-hidden rounded-xl border border-white/10 bg-[radial-gradient(circle_at_top,rgba(168,85,247,0.16),transparent_45%),rgba(255,255,255,0.03)]">
+                          <img
+                            src={chief.image}
+                            alt={chief.name}
+                            className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)]"
+                          />
                         </div>
                         <div className="pt-4 text-center">
                           <h3 className="text-xl sm:text-2xl font-bold text-violet-200">
@@ -149,7 +143,7 @@ function OurGeneration() {
               </div>
             </Card>
 
-            <Card className="p-4 sm:p-6 lg:p-8" id="logo">
+            <Card className="p-4 sm:p-6 lg:p-8 rounded-xl border border-white/15 my-15" id="logo">
               <SectionTitle title="Our Logo" />
               <div className="mt-5 flex items-center justify-between gap-3">
                 <CarouselButton
@@ -170,10 +164,12 @@ function OurGeneration() {
                       key={item.title}
                       className="snap-start min-w-[86%] sm:min-w-[48%] lg:min-w-[31%]"
                     >
-                      <Card className="h-full p-4 sm:p-5">
+                      <Card className="h-full p-4 sm:p-5 rounded-xl border border-white/15">
                         <div className="flex h-full items-center gap-4 sm:gap-5">
                           <div className="grid h-20 w-20 sm:h-24 sm:w-24 shrink-0 place-items-center rounded-full border border-violet-300/60 bg-white/5 text-violet-200 shadow-[0_0_30px_rgba(168,85,247,0.15)]">
-                            <span className="text-3xl sm:text-4xl">{item.icon}</span>
+                            <span className="text-3xl sm:text-4xl">
+                              {item.icon}
+                            </span>
                           </div>
                           <div className="min-w-0">
                             <h3 className="text-lg sm:text-xl font-bold uppercase tracking-[0.08em] text-violet-200">
@@ -191,28 +187,21 @@ function OurGeneration() {
               </div>
             </Card>
 
-            <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_1.2fr] gap-4 sm:gap-6">
-              <Card className="p-4 sm:p-6 lg:p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_1.2fr] gap-4 sm:gap-6 my-15">
+              <Card className="h-full p-4 sm:p-5 rounded-xl border border-white/15">
                 <SectionTitle title="Our Maskot" />
-                <div className="mt-4 flex items-center justify-center">
-                  <div className="relative w-full max-w-85 aspect-square rounded-[26px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(168,85,247,0.18),transparent_45%),rgba(255,255,255,0.03)] overflow-hidden">
-                    <div className="absolute inset-0 opacity-50 bg-[radial-gradient(rgba(255,255,255,0.14)_1px,transparent_1px)] bg-size-[16px_16px]" />
-                    <div className="relative z-10 flex h-full items-center justify-center">
-                      <div className="text-center">
-                        <div className="text-7xl">🧑‍🎓</div>
-                        <p className="mt-4 text-base sm:text-lg font-semibold text-violet-200">
-                          Mascot Placeholder
-                        </p>
-                        <p className="mt-1 text-sm text-white/65">
-                          Ganti dengan maskot asli angkatan
-                        </p>
-                      </div>
-                    </div>
+                <div className="flex items-center justify-center">
+                  <div className="relative w-[80%] aspect-9/16 overflow-hidden">
+                    <img
+                      src="https://i.ibb.co/6v0Z7kH/Maskot-6101.png"
+                      alt="Our Generation Maskot"
+                      className="absolute inset-0 h-full w-full object-contain"
+                    />
                   </div>
                 </div>
               </Card>
 
-              <Card className="p-4 sm:p-6 lg:p-8">
+              <Card className="p-4 sm:p-6 lg:p-8 rounded-xl border border-white/15">
                 <SectionTitle title="Status Board" />
                 <div className="mt-6 space-y-5">
                   {statusBoard.map((item) => (
@@ -222,7 +211,9 @@ function OurGeneration() {
                     >
                       <div className="flex items-center gap-3 text-white/85">
                         <span className="text-lg">{item.icon}</span>
-                        <span className="text-sm sm:text-base">{item.label}</span>
+                        <span className="text-sm sm:text-base">
+                          {item.label}
+                        </span>
                       </div>
                       <ProgressBar value={item.value} />
                     </div>
@@ -231,7 +222,7 @@ function OurGeneration() {
               </Card>
             </div>
 
-            <Card className="p-4 sm:p-6 lg:p-8">
+            <Card className="p-4 sm:p-6 lg:p-8 rounded-xl border border-white/15 my-15">
               <SectionTitle title="Presentase Of Santri" />
               <div className="mt-6 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-5 lg:gap-8 items-start">
                 <div className="rounded-[22px] border border-white/10 bg-white/5 p-5 text-center">
@@ -249,47 +240,14 @@ function OurGeneration() {
                     >
                       <div className="flex items-center gap-3 text-white/85">
                         <span className="text-lg">{item.icon}</span>
-                        <span className="text-sm sm:text-base">{item.label}</span>
+                        <span className="text-sm sm:text-base">
+                          {item.label}
+                        </span>
                       </div>
                       <ProgressBar value={item.value} />
                     </div>
                   ))}
                 </div>
-              </div>
-            </Card>
-
-            <Card className="p-4 sm:p-6 lg:p-8" id="contact">
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-                <div>
-                  <div className="flex items-center gap-3">
-                    <div className="grid h-11 w-11 place-items-center rounded-xl border border-violet-300/60 bg-white/5 text-violet-200">
-                      6101
-                    </div>
-                    <div>
-                      <p className="text-sm sm:text-base font-semibold text-white/90">
-                        © 2026 Generation 6101
-                      </p>
-                      <p className="text-sm text-white/60">
-                        Built from memories, united forever.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  {socials.map((item) => (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      className="grid h-12 w-12 place-items-center rounded-full border border-white/12 bg-white/5 text-violet-200 transition hover:scale-105 hover:border-violet-300/60 hover:bg-white/10"
-                      aria-label={item.label}
-                    >
-                      <span className="text-lg">{item.icon}</span>
-                    </a>
-                  ))}
-                </div>
-
-                <div className="text-sm sm:text-base text-white/80">Contact Us</div>
               </div>
             </Card>
           </main>

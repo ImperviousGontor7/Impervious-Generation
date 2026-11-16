@@ -103,7 +103,7 @@ function History() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080b12] text-white selection:bg-violet-500/30 selection:text-white">
+    <div className="min-h-screen ">
       {/* HERO */}
       <section className="relative overflow-hidden border-b border-white/5">
         <img
@@ -130,6 +130,7 @@ function History() {
             <p className="mx-auto mt-6 max-w-2xl text-sm italic leading-relaxed text-slate-200/85 sm:text-base md:text-lg">
               “Sejarah Berdirinya Pondok Sejak Pondok Tegalsari Hingga Pondok Modern Darussalam.”
             </p>
+            
           </div>
         </div>
       </section>
