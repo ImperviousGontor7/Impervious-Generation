@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { Link } from "react-router-dom";
 
 import Trending from "../view_all/trending";
@@ -16,36 +15,109 @@ import { secondMid } from "../data/second_mid";
 import { categoryHome } from "../data/category_home";
 import { trendingHome } from "../data/trending_home";
 
-function Home() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+// ==========================================
+// INFINITE CAROUSEL HOOK
+// ==========================================
 
-  // Next
+function useInfiniteCarousel(slides, autoPlayMs = 0) {
+  const totalSlides = slides.length;
+
+  const [currentIndex, setCurrentIndex] = useState(totalSlides > 1 ? 1 : 0);
+
+  const [transitionEnabled, setTransitionEnabled] = useState(true);
+
+  // NEXT SLIDE
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % heroSlides.length);
+    if (totalSlides <= 1) return;
+
+    setCurrentIndex((prev) => prev + 1);
   };
 
-  // Previous
+  // PREVIOUS SLIDE
   const prevSlide = () => {
-    setCurrentIndex(
-      (prev) => (prev - 1 + heroSlides.length) % heroSlides.length,
-    );
+    if (totalSlides <= 1) return;
+
+    setCurrentIndex((prev) => prev - 1);
   };
 
-  // Dot Indicator
+  // DOT INDICATOR
   const goToSlide = (index) => {
-    setCurrentIndex(index);
+    if (totalSlides <= 1) return;
+
+    setCurrentIndex(index + 1);
   };
 
-  // Auto Slide
-  useEffect(() => {
-    if (!heroSlides.length) return;
+  // INFINITE LOOP
+  const handleTransitionEnd = (e) => {
+    if (e.target !== e.currentTarget || totalSlides <= 1) return;
 
-    const interval = setInterval(nextSlide, 5000);
+    // Kembali ke slide pertama
+    if (currentIndex >= totalSlides + 1) {
+      setTransitionEnabled(false);
+      setCurrentIndex(1);
+    }
+
+    // Kembali ke slide terakhir
+    if (currentIndex <= 0) {
+      setTransitionEnabled(false);
+      setCurrentIndex(totalSlides);
+    }
+  };
+
+  // RESET POSITION WITHOUT ANIMATION
+  useEffect(() => {
+    if (transitionEnabled) return;
+
+    const frame = requestAnimationFrame(() => {
+      setTransitionEnabled(true);
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [transitionEnabled]);
+
+  // AUTO PLAY
+  useEffect(() => {
+    if (autoPlayMs <= 0 || totalSlides <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => prev + 1);
+    }, autoPlayMs);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [autoPlayMs, totalSlides]);
 
-  // Glow Effect
+  // DUPLICATE FIRST AND LAST SLIDES
+  const renderedSlides =
+    totalSlides > 1 ? [slides[totalSlides - 1], ...slides, slides[0]] : slides;
+
+  // ACTIVE DOT INDEX
+  const activeIndex =
+    totalSlides > 1 ? (currentIndex - 1 + totalSlides) % totalSlides : 0;
+
+  return {
+    currentIndex,
+    activeIndex,
+    renderedSlides,
+    transitionEnabled,
+    nextSlide,
+    prevSlide,
+    goToSlide,
+    handleTransitionEnd,
+  };
+}
+
+// ==========================================
+// HOME COMPONENT
+// ==========================================
+
+function Home() {
+  // HERO SLIDER
+  const heroCarousel = useInfiniteCarousel(heroSlides, 5000);
+
+  // ROOT SLIDER
+  const rootCarousel = useInfiniteCarousel(rootSlides, 5000);
+
+  // GLOW EFFECT - MOUSE MOVE
   const handleMove = (e) => {
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
@@ -55,20 +127,35 @@ function Home() {
     card.style.setProperty("--opacity", "1");
   };
 
+  // GLOW EFFECT - MOUSE LEAVE
   const handleLeave = (e) => {
     e.currentTarget.style.setProperty("--opacity", "0");
   };
 
+  // CHECK HERO SLIDES
   if (!heroSlides.length) return null;
+
+  // ==========================================
+  // HOME JSX DILANJUTKAN DI BAWAH INI
+  // ==========================================
+
+  // Letakkan return JSX Home milikmu di sini.
 
   return (
     <div id="view-beranda" className="view-pane active">
       <section className="relative w-full overflow-hidden">
         <div
-          className="flex transition-transform duration-700 ease-in-out will-change-transform"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          onTransitionEnd={heroCarousel.handleTransitionEnd}
+          className={`flex will-change-transform ${
+            heroCarousel.transitionEnabled
+              ? "transition-transform duration-700 ease-in-out"
+              : ""
+          }`}
+          style={{
+            transform: `translateX(-${heroCarousel.currentIndex * 100}%)`,
+          }}
         >
-          {heroSlides.map((slide, index) => (
+          {heroCarousel.renderedSlides.map((slide, index) => (
             <article
               key={index}
               className="
@@ -90,12 +177,12 @@ function Home() {
               <div className="absolute inset-0 bg-linear-to-t from-bg-main via-transparent to-transparent" />
 
               <div className="relative z-10 flex h-full items-center justify-center px-[clamp(1rem,3vw,3rem)] pb-[clamp(1.5rem,5vw,5rem)] pt-[clamp(2rem,6vw,6rem)]">
-                <div className="max-w-[clamp(20rem,80vw,68rem)] text-center text-white">
+                <div className="max-w-[clamp(20rem,80vw,75rem)] text-center text-white">
                   <p className="mb-[clamp(.5rem,1vw,1rem)] text-[clamp(.7rem,.9vw,.95rem)] font-medium uppercase tracking-[0.35em] text-white/70">
-                    {slide.subtitle}
+                    - {slide.subtitle} -
                   </p>
 
-                  <h1 className="mx-auto max-w-[clamp(18rem,78vw,58rem)] text-[clamp(2rem,7vw,6rem)] font-bold leading-[1.05]">
+                  <h1 className="mx-auto max-w-[clamp(20rem,80vw,75rem)] text-[clamp(2.25rem,4vw,5rem)] font-bold leading-[1.05]">
                     {slide.title}
                   </h1>
 
@@ -111,7 +198,7 @@ function Home() {
                         rounded-full bg-white
                         px-[clamp(1.25rem,3vw,2.5rem)]
                         py-[clamp(.7rem,1vw,1rem)]
-                        text-[clamp(.875rem,1vw,1rem)]
+                        text-[clamp(.75rem,1vw,1rem)]
                         font-semibold text-black
                         transition duration-300
                         hover:scale-105 hover:bg-white/90
@@ -128,7 +215,7 @@ function Home() {
         </div>
 
         <button
-          onClick={prevSlide}
+          onClick={heroCarousel.prevSlide}
           aria-label="Previous slide"
           className="
             absolute left-3 top-1/2 z-20 -translate-y-1/2
@@ -143,7 +230,7 @@ function Home() {
         </button>
 
         <button
-          onClick={nextSlide}
+          onClick={heroCarousel.nextSlide}
           aria-label="Next slide"
           className="
             absolute right-3 top-1/2 z-20 -translate-y-1/2
@@ -161,10 +248,10 @@ function Home() {
           {heroSlides.map((_, index) => (
             <button
               key={index}
-              onClick={() => goToSlide(index)}
+              onClick={() => heroCarousel.goToSlide(index)}
               aria-label={`Go to slide ${index + 1}`}
               className={`h-2.5 rounded-full transition-all duration-300 ${
-                currentIndex === index
+                heroCarousel.activeIndex === index
                   ? "w-8 bg-white"
                   : "w-2.5 bg-white/40 hover:bg-white/70"
               }`}
@@ -237,45 +324,82 @@ function Home() {
                   />
 
                   {/* CONTENT */}
-                  <div className="absolute inset-0 z-10 px-10 top-60 bottom-0 text-white p-5">
-                    {/* time */}
-                    <span
-                      className="inline-flex 
-                    items-center
-                    justify-center
-                    px-[clamp(1rem,1vw,1.5rem)]
-                    h-[clamp(2rem,2.2vw,2.5rem)]
-                    bg-honey/85 rounded-3xl
-                    text-[clamp(0.75rem,0.75vw,1.25rem)]
-                        font-semibold
-                        tracking-wide
-                        text-white
-                        whitespace-nowrap mb-3"
-                    >
-                      {item.category}
-                    </span>
+                  <div
+                    className="
+    absolute
+    inset-x-0
+    top-[40%]
+    bottom-0
+    z-10
+    flex
+    flex-col
+    justify-between
+    text-white
 
-                    {/* TITLE */}
-                    <h2
-                      className="
-                    text-white
-                    font-bold my-4
+    px-5
+    pt-4
+    pb-5
 
-                    text-[clamp(1.5rem,1.75vw,2.5rem)]
-                    leading-tight
+    sm:px-6
+    sm:pt-5
 
-                    line-clamp-2
-                  "
-                    >
-                      {item.title}
-                    </h2>
+    lg:px-8
 
-                    {/* description & TIME */}
+    min-[1440px]:top-60
+    min-[1440px]:block
+    min-[1440px]:px-10
+    min-[1440px]:p-5
+  "
+                  >
+                    {/* TAG & TITLE */}
+                    <div>
+                      {/* CATEGORY */}
+                      <span
+                        className="
+        inline-flex
+        items-center
+        justify-center
+        px-[clamp(1rem,1vw,1.5rem)]
+        h-[clamp(1.5rem,2vw,2.5rem)]
+        bg-honey/85
+        rounded-3xl
+        text-[clamp(0.6rem,0.75vw,1.25rem)]
+        font-semibold
+        tracking-wide
+        text-white
+        whitespace-nowrap
+        mb-3
+      "
+                      >
+                        {item.category}
+                      </span>
+
+                      {/* TITLE */}
+                      <h2
+                        className="
+        text-white
+        font-bold
+        my-3 sm:my-4
+        text-[clamp(1.25rem,1.5vw,2.5rem)]
+        leading-tight
+        line-clamp-2
+      "
+                      >
+                        {item.title}
+                      </h2>
+                    </div>
+
+                    {/* DATE & TIME */}
                     <p
                       className="
-                    text-[clamp(0.85rem,0.7vw,1.5rem)] 
-                    text-white/60 absolute bottom-7
-                    "
+      text-[clamp(0.75rem,1.2vw,0.9rem)]
+      lg:text-[clamp(0.85rem,0.7vw,1.5rem)]
+      xl:text-[clamp(0.85rem,0.7vw,1.5rem)]
+      text-white/60
+
+      min-[1440px]:absolute
+      min-[1440px]:bottom-7
+    "
                     >
                       {item.date} • {item.time}
                     </p>
@@ -351,45 +475,82 @@ function Home() {
                   />
 
                   {/* CONTENT */}
-                  <div className="absolute inset-0 z-10 px-10 top-60 bottom-0 text-white p-5">
-                    {/* time */}
-                    <span
-                      className="inline-flex 
-                    items-center
-                    justify-center
-                    px-[clamp(1rem,1vw,1.5rem)]
-                    h-[clamp(2rem,2.2vw,2.5rem)]
-                    bg-honey/85 rounded-3xl
-                    text-[clamp(0.75rem,0.75vw,1.25rem)]
-                        font-semibold
-                        tracking-wide
-                        text-white
-                        whitespace-nowrap mb-3"
-                    >
-                      {item.category}
-                    </span>
+                  <div
+                    className="
+    absolute
+    inset-x-0
+    top-[40%]
+    bottom-0
+    z-10
+    flex
+    flex-col
+    justify-between
+    text-white
 
-                    {/* TITLE */}
-                    <h2
-                      className="
-                    text-white
-                    font-bold my-4
+    px-5
+    pt-4
+    pb-5
 
-                    text-[clamp(1.5rem,1.75vw,2.5rem)]
-                    leading-tight
+    sm:px-6
+    sm:pt-5
 
-                    line-clamp-2
-                  "
-                    >
-                      {item.title}
-                    </h2>
+    lg:px-8
 
-                    {/* description & TIME */}
+    min-[1440px]:top-60
+    min-[1440px]:block
+    min-[1440px]:px-10
+    min-[1440px]:p-5
+  "
+                  >
+                    {/* TAG & TITLE */}
+                    <div>
+                      {/* CATEGORY */}
+                      <span
+                        className="
+        inline-flex
+        items-center
+        justify-center
+        px-[clamp(1rem,1vw,1.5rem)]
+        h-[clamp(1.5rem,2vw,2.5rem)]
+        bg-honey/85
+        rounded-3xl
+        text-[clamp(0.6rem,0.75vw,1.25rem)]
+        font-semibold
+        tracking-wide
+        text-white
+        whitespace-nowrap
+        mb-3
+      "
+                      >
+                        {item.category}
+                      </span>
+
+                      {/* TITLE */}
+                      <h2
+                        className="
+        text-white
+        font-bold
+        my-3 sm:my-4
+        text-[clamp(1.25rem,1.5vw,2.5rem)]
+        leading-tight
+        line-clamp-2
+      "
+                      >
+                        {item.title}
+                      </h2>
+                    </div>
+
+                    {/* DATE & TIME */}
                     <p
                       className="
-                    text-[clamp(0.85rem,0.7vw,1.5rem)] 
-                    text-white/60 absolute bottom-7
-                    "
+      text-[clamp(0.75rem,1.2vw,0.9rem)]
+      lg:text-[clamp(0.85rem,0.7vw,1.5rem)]
+      xl:text-[clamp(0.85rem,0.7vw,1.5rem)]
+      text-white/60
+
+      min-[1440px]:absolute
+      min-[1440px]:bottom-7
+    "
                     >
                       {item.date} • {item.time}
                     </p>
@@ -400,15 +561,22 @@ function Home() {
           </div>
         </div>
         <section className="relative w-full overflow-hidden rounded-4xl border">
-          {/* heroSlides */}
+          {/* ROOT SLIDER */}
           <div
-            className="flex transition-transform duration-700 ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            onTransitionEnd={rootCarousel.handleTransitionEnd}
+            className={`flex ${
+              rootCarousel.transitionEnabled
+                ? "transition-transform duration-700 ease-in-out"
+                : ""
+            }`}
+            style={{
+              transform: `translateX(-${rootCarousel.currentIndex * 100}%)`,
+            }}
           >
-            {rootSlides.map((slide, index) => (
+            {rootCarousel.renderedSlides.map((slide, index) => (
               <div
                 key={index}
-                className="relative min-w-full h-[clamp(20rem,50vh,60rem)] overflow-hidden"
+                className="relative min-w-full aspect-video overflow-hidden"
               >
                 <img
                   src={slide.image}
@@ -420,34 +588,33 @@ function Home() {
                 <div className="absolute inset-0 bg-linear-to-r from-bg-main via-[#0d0500]/75 to-transparent" />
 
                 <div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center px-4">
-                  <div className="max-w-4xl text-center text-white">
-                    <p className="mb-4 text-sm tracking-[0.5em] text-white/70">
-                      {slide.subtitle}
+                  <div className="max-w-[clamp(20rem,80vw,75rem)] text-center text-white">
+                    <p className="mb-[clamp(.5rem,1vw,1rem)] text-[clamp(.5rem,.5vw,.75rem)] uppercase tracking-[0.35em] text-white/70">
+                      - {slide.subtitle} -
                     </p>
 
-                    <h1 className="text-[clamp(2.8rem,7vw,6rem)] font-bold leading-tight">
+                    <h1 className="mx-auto max-w-[clamp(20rem,80vw,75rem)] text-[clamp(0.75rem,4vw,4.25rem)] font-bold leading-[1.05]">
                       {slide.title}
                     </h1>
 
-                    <p className="mx-auto mt-5 max-w-2xl text-[clamp(1rem,1.2vw,1.25rem)] leading-relaxed text-white/75">
+                    <p className="mx-auto mt-[clamp(.9rem,1.5vw,1.4rem)] max-w-[clamp(18rem,56vw,42rem)] text-[clamp(.75rem,1vw,1.25rem)] leading-relaxed text-white/75">
                       {slide.description}
                     </p>
 
-                    <div className="mt-8 flex flex-wrap justify-center gap-4">
+                    <div className="mt-[clamp(1.25rem,2vw,2rem)] flex flex-wrap justify-center gap-[clamp(.75rem,1.5vw,1rem)]">
                       <Link
                         to={slide.buttonPrimary.href}
                         className="
-rounded-full
-bg-white
-px-[clamp(1.5rem,3vw,2.5rem)]
-py-[clamp(0.75rem,1vw,1rem)]
-text-[clamp(0.875rem,1vw,1rem)]
-font-semibold
-text-black
-transition
-hover:scale-105
-hover:bg-white/90
-"
+                        inline-flex items-center justify-center
+                        rounded-full bg-white
+                        px-[clamp(1.2rem,3vw,2.5rem)]
+                        py-[clamp(.7rem,1vw,1rem)]
+                        text-[clamp(.5rem,1vw,1rem)]
+                        font-semibold text-black
+                        transition duration-300
+                        hover:scale-105 hover:bg-white/90
+                        focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80
+                      "
                       >
                         {slide.buttonPrimary.text}
                       </Link>
@@ -458,9 +625,9 @@ hover:bg-white/90
             ))}
           </div>
 
-          {/* PREV BUTTON */}
+          {/* PREVIOUS BUTTON */}
           <button
-            onClick={prevSlide}
+            onClick={rootCarousel.prevSlide}
             className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/40 px-4 py-3 text-white backdrop-blur-md transition hover:bg-black/60"
             aria-label="Previous slide"
           >
@@ -469,7 +636,7 @@ hover:bg-white/90
 
           {/* NEXT BUTTON */}
           <button
-            onClick={nextSlide}
+            onClick={rootCarousel.nextSlide}
             className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/40 px-4 py-3 text-white backdrop-blur-md transition hover:bg-black/60"
             aria-label="Next slide"
           >
@@ -481,10 +648,10 @@ hover:bg-white/90
             {rootSlides.map((_, index) => (
               <button
                 key={index}
-                onClick={() => goToSlide(index)}
+                onClick={() => rootCarousel.goToSlide(index)}
                 aria-label={`Go to slide ${index + 1}`}
                 className={`h-2.5 rounded-full transition-all duration-300 ${
-                  currentIndex === index
+                  rootCarousel.activeIndex === index
                     ? "w-8 bg-white"
                     : "w-2.5 bg-white/40 hover:bg-white/70"
                 }`}
@@ -495,7 +662,7 @@ hover:bg-white/90
         <div className="w-full max-w-500 mx-auto px-5 sm:px-8 my-15 relative z-10">
           <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
             <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
-              Behind The Event
+              Multimedia Archive
             </h3>
 
             <div className="scrollbar-hidden overflow-x-auto py-5">
@@ -557,45 +724,82 @@ hover:bg-white/90
                     />
 
                     {/* CONTENT */}
-                    <div className="absolute inset-0 z-10 px-10 top-60 bottom-0 text-white p-5">
-                      {/* time */}
-                      <span
-                        className="inline-flex 
-                    items-center
-                    justify-center
-                    px-[clamp(1rem,1vw,1.5rem)]
-                    h-[clamp(2rem,2.2vw,2.5rem)]
-                    bg-honey/85 rounded-3xl
-                    text-[clamp(0.75rem,0.75vw,1.25rem)]
-                        font-semibold
-                        tracking-wide
-                        text-white
-                        whitespace-nowrap mb-3"
-                      >
-                        {item.category}
-                      </span>
+                    <div
+                      className="
+    absolute
+    inset-x-0
+    top-[40%]
+    bottom-0
+    z-10
+    flex
+    flex-col
+    justify-between
+    text-white
 
-                      {/* TITLE */}
-                      <h2
-                        className="
-                    text-white
-                    font-bold my-4
+    px-5
+    pt-4
+    pb-5
 
-                    text-[clamp(1.5rem,1.75vw,2.5rem)]
-                    leading-tight
+    sm:px-6
+    sm:pt-5
 
-                    line-clamp-2
-                  "
-                      >
-                        {item.title}
-                      </h2>
+    lg:px-8
 
-                      {/* description & TIME */}
+    min-[1440px]:top-60
+    min-[1440px]:block
+    min-[1440px]:px-10
+    min-[1440px]:p-5
+  "
+                    >
+                      {/* TAG & TITLE */}
+                      <div>
+                        {/* CATEGORY */}
+                        <span
+                          className="
+        inline-flex
+        items-center
+        justify-center
+        px-[clamp(1rem,1vw,1.5rem)]
+        h-[clamp(1.5rem,2vw,2.5rem)]
+        bg-honey/85
+        rounded-3xl
+        text-[clamp(0.6rem,0.75vw,1.25rem)]
+        font-semibold
+        tracking-wide
+        text-white
+        whitespace-nowrap
+        mb-3
+      "
+                        >
+                          {item.category}
+                        </span>
+
+                        {/* TITLE */}
+                        <h2
+                          className="
+        text-white
+        font-bold
+        my-3 sm:my-4
+        text-[clamp(1.25rem,1.5vw,2.5rem)]
+        leading-tight
+        line-clamp-2
+      "
+                        >
+                          {item.title}
+                        </h2>
+                      </div>
+
+                      {/* DATE & TIME */}
                       <p
                         className="
-                    text-[clamp(0.85rem,0.7vw,1.5rem)] 
-                    text-white/60 absolute bottom-7
-                    "
+      text-[clamp(0.75rem,1.2vw,0.9rem)]
+      lg:text-[clamp(0.85rem,0.7vw,1.5rem)]
+      xl:text-[clamp(0.85rem,0.7vw,1.5rem)]
+      text-white/60
+
+      min-[1440px]:absolute
+      min-[1440px]:bottom-7
+    "
                       >
                         {item.date} • {item.time}
                       </p>
@@ -781,19 +985,19 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
           </div>
         </section>
         <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
-            <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
-              Isidental - First Mid Year
-            </h3>
+          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
+            Behind The Scene
+          </h3>
 
-            <div className="scrollbar-hidden overflow-x-auto py-5">
-              <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
-                {firstMid.map((item) => (
-                  <Link
-                    key={item.id}
-                    to={item.link}
-                    onMouseMove={handleMove}
-                    onMouseLeave={handleLeave}
-                    className="
+          <div className="scrollbar-hidden overflow-x-auto py-5">
+            <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
+              {firstMid.map((item) => (
+                <Link
+                  key={item.id}
+                  to={item.link}
+                  onMouseMove={handleMove}
+                  onMouseLeave={handleLeave}
+                  className="
   glow-card
   shrink-0
   snap-start
@@ -814,25 +1018,25 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
   hover:-translate-y-4
   hover:shadow-2xl
 "
-                  >
-                    {/* IMAGE */}
-                    <div className="absolute inset-0 h-[70%] w-full">
-                      <img
-                        src={hero}
-                        alt={item.title}
-                        className="block h-full w-full object-cover selected-none"
-                      />
-
-                      <div
-                        className="absolute inset-0 translate-y-px h-full 
-                    w-full bg-linear-to-t from-choco to-choco/25"
-                      />
-                    </div>
-
-                    {/* OVERLAY */}
+                >
+                  {/* IMAGE */}
+                  <div className="absolute inset-0 h-[70%] w-full">
+                    <img
+                      src={hero}
+                      alt={item.title}
+                      className="block h-full w-full object-cover selected-none"
+                    />
 
                     <div
-                      className="
+                      className="absolute inset-0 translate-y-px h-full 
+                    w-full bg-linear-to-t from-choco to-choco/25"
+                    />
+                  </div>
+
+                  {/* OVERLAY */}
+
+                  <div
+                    className="
                   absolute
                   inset-0
 
@@ -841,23 +1045,55 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                   via-choco/35
                   to-transparent
                 "
-                    />
+                  />
 
-                    {/* CONTENT */}
-                    <div className="absolute inset-0 z-10 px-10 top-60 bottom-0 text-white p-5">
-                      {/* time */}
+                  {/* CONTENT */}
+                  <div
+                    className="
+    absolute
+    inset-x-0
+    top-[40%]
+    bottom-0
+    z-10
+    flex
+    flex-col
+    justify-between
+    text-white
+
+    px-5
+    pt-4
+    pb-5
+
+    sm:px-6
+    sm:pt-5
+
+    lg:px-8
+
+    min-[1440px]:top-60
+    min-[1440px]:block
+    min-[1440px]:px-10
+    min-[1440px]:p-5
+  "
+                  >
+                    {/* TAG & TITLE */}
+                    <div>
+                      {/* CATEGORY */}
                       <span
-                        className="inline-flex 
-                    items-center
-                    justify-center
-                    px-[clamp(1rem,1vw,1.5rem)]
-                    h-[clamp(2rem,2.2vw,2.5rem)]
-                    bg-honey/85 rounded-3xl
-                    text-[clamp(0.75rem,0.75vw,1.25rem)]
-                        font-semibold
-                        tracking-wide
-                        text-white
-                        whitespace-nowrap mb-3"
+                        className="
+        inline-flex
+        items-center
+        justify-center
+        px-[clamp(1rem,1vw,1.5rem)]
+        h-[clamp(1.5rem,2vw,2.5rem)]
+        bg-honey/85
+        rounded-3xl
+        text-[clamp(0.6rem,0.75vw,1.25rem)]
+        font-semibold
+        tracking-wide
+        text-white
+        whitespace-nowrap
+        mb-3
+      "
                       >
                         {item.category}
                       </span>
@@ -865,47 +1101,50 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                       {/* TITLE */}
                       <h2
                         className="
-                    text-white
-                    font-bold my-4
-
-                    text-[clamp(1.5rem,1.75vw,2.5rem)]
-                    leading-tight
-
-                    line-clamp-2
-                  "
+        text-white
+        font-bold
+        my-3 sm:my-4
+        text-[clamp(1.25rem,1.5vw,2.5rem)]
+        leading-tight
+        line-clamp-2
+      "
                       >
                         {item.title}
                       </h2>
-
-                      {/* description & TIME */}
-                      <p
-                        className="
-                    text-[clamp(0.85rem,0.7vw,1.5rem)] 
-                    text-white/60 absolute bottom-7
-                    "
-                      >
-                        {item.date} • {item.time}
-                      </p>
                     </div>
-                  </Link>
-                ))}
-              </div>
+
+                    {/* DATE & TIME */}
+                    <p
+                      className="
+      text-[clamp(0.75rem,1.2vw,0.9rem)]
+      lg:text-[clamp(0.85rem,0.7vw,1.5rem)]
+      xl:text-[clamp(0.85rem,0.7vw,1.5rem)]
+      text-white/60
+
+      min-[1440px]:absolute
+      min-[1440px]:bottom-7
+    "
+                    >
+                      {item.date} • {item.time}
+                    </p>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
+        </div>
         <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
-            <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
-              Isidental - Second Mid Year
-            </h3>
+          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">Isidental</h3>
 
-            <div className="scrollbar-hidden overflow-x-auto py-5">
-              <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
-                {secondMid.map((item) => (
-                  <Link
-                    key={item.id}
-                    to={item.link}
-                    onMouseMove={handleMove}
-                    onMouseLeave={handleLeave}
-                    className="
+          <div className="scrollbar-hidden overflow-x-auto py-5">
+            <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
+              {secondMid.map((item) => (
+                <Link
+                  key={item.id}
+                  to={item.link}
+                  onMouseMove={handleMove}
+                  onMouseLeave={handleLeave}
+                  className="
   glow-card
   shrink-0
   snap-start
@@ -926,25 +1165,25 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
   hover:-translate-y-4
   hover:shadow-2xl
 "
-                  >
-                    {/* IMAGE */}
-                    <div className="absolute inset-0 h-[70%] w-full">
-                      <img
-                        src={hero}
-                        alt={item.title}
-                        className="block h-full w-full object-cover selected-none"
-                      />
-
-                      <div
-                        className="absolute inset-0 translate-y-px h-full 
-                    w-full bg-linear-to-t from-choco to-choco/25"
-                      />
-                    </div>
-
-                    {/* OVERLAY */}
+                >
+                  {/* IMAGE */}
+                  <div className="absolute inset-0 h-[70%] w-full">
+                    <img
+                      src={hero}
+                      alt={item.title}
+                      className="block h-full w-full object-cover selected-none"
+                    />
 
                     <div
-                      className="
+                      className="absolute inset-0 translate-y-px h-full 
+                    w-full bg-linear-to-t from-choco to-choco/25"
+                    />
+                  </div>
+
+                  {/* OVERLAY */}
+
+                  <div
+                    className="
                   absolute
                   inset-0
 
@@ -953,23 +1192,55 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                   via-choco/35
                   to-transparent
                 "
-                    />
+                  />
 
-                    {/* CONTENT */}
-                    <div className="absolute inset-0 z-10 px-10 top-60 bottom-0 text-white p-5">
-                      {/* time */}
+                  {/* CONTENT */}
+                  <div
+                    className="
+    absolute
+    inset-x-0
+    top-[40%]
+    bottom-0
+    z-10
+    flex
+    flex-col
+    justify-between
+    text-white
+
+    px-5
+    pt-4
+    pb-5
+
+    sm:px-6
+    sm:pt-5
+
+    lg:px-8
+
+    min-[1440px]:top-60
+    min-[1440px]:block
+    min-[1440px]:px-10
+    min-[1440px]:p-5
+  "
+                  >
+                    {/* TAG & TITLE */}
+                    <div>
+                      {/* CATEGORY */}
                       <span
-                        className="inline-flex 
-                    items-center
-                    justify-center
-                    px-[clamp(1rem,1vw,1.5rem)]
-                    h-[clamp(2rem,2.2vw,2.5rem)]
-                    bg-honey/85 rounded-3xl
-                    text-[clamp(0.75rem,0.75vw,1.25rem)]
-                        font-semibold
-                        tracking-wide
-                        text-white
-                        whitespace-nowrap mb-3"
+                        className="
+        inline-flex
+        items-center
+        justify-center
+        px-[clamp(1rem,1vw,1.5rem)]
+        h-[clamp(1.5rem,2vw,2.5rem)]
+        bg-honey/85
+        rounded-3xl
+        text-[clamp(0.6rem,0.75vw,1.25rem)]
+        font-semibold
+        tracking-wide
+        text-white
+        whitespace-nowrap
+        mb-3
+      "
                       >
                         {item.category}
                       </span>
@@ -977,33 +1248,38 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                       {/* TITLE */}
                       <h2
                         className="
-                    text-white
-                    font-bold my-4
-
-                    text-[clamp(1.5rem,1.75vw,2.5rem)]
-                    leading-tight
-
-                    line-clamp-2
-                  "
+        text-white
+        font-bold
+        my-3 sm:my-4
+        text-[clamp(1.25rem,1.5vw,2.5rem)]
+        leading-tight
+        line-clamp-2
+      "
                       >
                         {item.title}
                       </h2>
-
-                      {/* description & TIME */}
-                      <p
-                        className="
-                    text-[clamp(0.85rem,0.7vw,1.5rem)] 
-                    text-white/60 absolute bottom-7
-                    "
-                      >
-                        {item.date} • {item.time}
-                      </p>
                     </div>
-                  </Link>
-                ))}
-              </div>
+
+                    {/* DATE & TIME */}
+                    <p
+                      className="
+      text-[clamp(0.75rem,1.2vw,0.9rem)]
+      lg:text-[clamp(0.85rem,0.7vw,1.5rem)]
+      xl:text-[clamp(0.85rem,0.7vw,1.5rem)]
+      text-white/60
+
+      min-[1440px]:absolute
+      min-[1440px]:bottom-7
+    "
+                    >
+                      {item.date} • {item.time}
+                    </p>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
+        </div>
         <div
           className="
         grid

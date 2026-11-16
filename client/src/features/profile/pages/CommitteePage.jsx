@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Shield from "../../../assets/images/Jami Emas.webp";
 import Card from "../generation/ActorCard";
 
-import { paneldata } from "../Organizers/PanelData.js";
+import { paneldata } from "../Journalyst/PanelData.js";
 
 function Committee() {
   return (

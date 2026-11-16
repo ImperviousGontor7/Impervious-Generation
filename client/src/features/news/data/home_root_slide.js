@@ -4,11 +4,11 @@ export const rootSlides = [
   {
     id: 1,
     image: hero,
-    subtitle: "PESANTREN",
-    title: "Gontor Campus 7",
+    subtitle: "THE SPIRIT OF ADVENTURE",
+    title: "Lomba Pramuka Penggalang Dan Penegak",
 
     description:
-      "Membangun generasi muslim yang berakhlak, berilmu, dan siap menghadapi tantangan zaman.",
+      "Menempa jiwa dalam semangat pengembaraan, membangun karakter melalui keberanian dan pengabdian.",
 
     buttonPrimary: {
       text: "Read More",
@@ -21,11 +21,11 @@ export const rootSlides = [
   {
     id: 2,
     image: hero,
-    subtitle: "EVENT",
-    title: "Century Night Festival",
+    subtitle: "THE ART OF LEADERSHIP",
+    title: "Kursus Mahir Dasar",
 
     description:
-      "Perayaan 100 tahun Pondok Modern Darussalam Gontor dengan berbagai kegiatan inspiratif.",
+      "Membentuk pemimpin dengan ilmu dan keteladanan, menumbuhkan jiwa pembina yang penuh tanggung jawab dan pengabdian.",
 
     buttonPrimary: {
       text: "Read More",
@@ -38,17 +38,49 @@ export const rootSlides = [
   {
     id: 3,
     image: hero,
-    subtitle: "MULTIMEDIA",
-    title: "Photography Team",
+    subtitle: "HARMONY IN EVERY NOTE",
+    title: "Folksong Interclasses",
 
     description:
-      "Mengabadikan setiap momen terbaik melalui karya fotografi dan videografi yang profesional.",
-
+      "Beragam suara berpadu dalam irama, menyatukan harmoni dan persaudaraan melalui nada.",
     buttonPrimary: {
       text: "Read More",
       href: "/article/gontor-campus-7",
     },
 
     link: "/article/photography-team",
+  },
+  {
+    id: 4,
+    image: hero,
+    subtitle: "A TAPESTRY OF CULTURE",
+    title: "EXPO Muharram Festival",
+
+    description:
+      "Merayakan tradisi dalam keberagaman, mempertemukan kreativitas dan budaya dalam satu perayaan.",
+
+    buttonPrimary: {
+      text: "Read More",
+      href: "/article/gontor-campus-7",
+    },
+
+    link: "/article/gontor-campus-7",
+  },
+
+  {
+    id: 5,
+    image: hero,
+    subtitle: "HONOUR IN SERVICE",
+    title: "Saka Wirakartika",
+
+    description:
+      "Menanamkan disiplin dalam setiap tindakan, mengukuhkan jiwa pengabdian melalui ketangguhan dan kesetiaan.",
+
+    buttonPrimary: {
+      text: "Read More",
+      href: "/article/gontor-campus-7",
+    },
+
+    link: "/article/century-night-festival",
   },
 ];
