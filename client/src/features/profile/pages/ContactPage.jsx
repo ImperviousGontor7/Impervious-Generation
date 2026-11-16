@@ -136,7 +136,7 @@ function FaqItem({ question }) {
 function Contact() {
   return (
     <div className="w-full">
-      <div className="w-full max-w-500 mx-auto px-5 sm:px-8 -mt-24 relative z-10 pt-24 sm:pt-28 lg:pt-32">
+      <div className="w-full max-w-500 mx-auto px-5 sm:px-8 relative z-10">
         <div className="grid gap-8 md:grid-cols-2 md:items-end">
           <section className="w-full max-w-xl mb-15 space-y-5 sm:space-y-6">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold tracking-[0.25em] text-white/75 backdrop-blur-md sm:text-sm">

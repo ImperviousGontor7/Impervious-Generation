@@ -16,8 +16,6 @@ import { secondMid } from "../data/second_mid";
 import { categoryHome } from "../data/category_home";
 import { trendingHome } from "../data/trending_home";
 
-
-
 function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -29,7 +27,7 @@ function Home() {
   // Previous
   const prevSlide = () => {
     setCurrentIndex(
-      (prev) => (prev - 1 + heroSlides.length) % heroSlides.length
+      (prev) => (prev - 1 + heroSlides.length) % heroSlides.length,
     );
   };
 
@@ -87,7 +85,6 @@ function Home() {
                 alt={slide.title}
                 className="absolute inset-0 h-full w-full object-cover object-center"
               />
-
 
               <div className="absolute inset-0 bg-black/55" />
               <div className="absolute inset-0 bg-linear-to-t from-bg-main via-transparent to-transparent" />
@@ -166,62 +163,63 @@ function Home() {
               key={index}
               onClick={() => goToSlide(index)}
               aria-label={`Go to slide ${index + 1}`}
-              className={`h-2.5 rounded-full transition-all duration-300 ${currentIndex === index
-                ? "w-8 bg-white"
-                : "w-2.5 bg-white/40 hover:bg-white/70"
-                }`}
+              className={`h-2.5 rounded-full transition-all duration-300 ${
+                currentIndex === index
+                  ? "w-8 bg-white"
+                  : "w-2.5 bg-white/40 hover:bg-white/70"
+              }`}
             />
           ))}
         </div>
       </section>
       <div className="w-full max-w-500 mx-auto px-5 sm:px-8 -mt-24 relative z-10">
-        <div className="max-h-[clamp(50rem,45vw,75rem)] mx-auto my-25">
+        <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
           <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
-            <span className="text-white">This Month</span>
-            <span className="text-white-500"> - Month 1</span>
+            First Mid Year
           </h3>
-          <div className="overflow-x-auto scrollbar-hidden pt-5">
 
-            <div className="flex gap-6 snap-x snap-mandatory pb-5">
-
+          <div className="scrollbar-hidden overflow-x-auto py-5">
+            <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
               {thisMonth.map((item) => (
-
                 <Link
                   key={item.id}
                   to={item.link}
                   onMouseMove={handleMove}
                   onMouseLeave={handleLeave}
                   className="
-                glow-card
-                shrink-0
-                snap-start
+  glow-card
+  shrink-0
+  snap-start
 
-                w-[clamp(18rem,22vw,30rem)] 
-                aspect-4/5
+  w-[clamp(18rem,22vw,30rem)]
+  aspect-4/5
 
-                overflow-hidden
-                rounded-3xl
+  overflow-hidden
+  rounded-3xl
+  border
+  border-white/10
+  bg-choco
 
-                border
-                border-white/10
+  transition-all
+  duration-300
 
-                bg-choco
-
-                transition-all
-                duration-250
-
-                hover:-translate-y-3
-                hover:shadow-2xl
-              "
+  hover:z-10
+  hover:-translate-y-4
+  hover:shadow-2xl
+"
                 >
-
                   {/* IMAGE */}
+                  <div className="absolute inset-0 h-[70%] w-full">
+                    <img
+                      src={hero}
+                      alt={item.title}
+                      className="block h-full w-full object-cover selected-none"
+                    />
 
-                  <div className="relative h-[70%]">
-                    <img src={hero}
-                      alt="Hero" className="block w-full h-full object-cover selected-none" />
-                    <div className="absolute inset-0 translate-y-px w-full 
-                h-full bg-linear-to-t from-choco to-choco/25" />
+                    <div
+                      className="absolute inset-0 translate-y-px h-full 
+                    w-full bg-linear-to-t from-choco to-choco/25"
+                    />
                   </div>
 
                   {/* OVERLAY */}
@@ -239,137 +237,103 @@ function Home() {
                   />
 
                   {/* CONTENT */}
-
-                  <div
-                    className="
-                  absolute
-                  inset-0
-                  z-10
-
-                  flex
-                  flex-col
-                  justify-end
-
-                  p-5
-                "
-                  >
-
-
-                    <div className="-translate-y-[clamp(0.75rem,2.5vw,5rem)]">
-
-                      {/* Tag */}
-                      <div className="flex items-center mb-[clamp(0.75rem,1vw,1.25rem)]">
-
-                        <span
-                          className="
-                        inline-flex
-                        items-center
-                        justify-center
-
-                        h-[clamp(2rem,2.2vw,2.5rem)]
-                        px-[clamp(1rem,1vw,1.5rem)]
-
-                        rounded-full
-                        bg-honey/85
-
-                        text-[clamp(0.75rem,0.75vw,1.25rem)]
+                  <div className="absolute inset-0 z-10 px-10 top-60 bottom-0 text-white p-5">
+                    {/* time */}
+                    <span
+                      className="inline-flex 
+                    items-center
+                    justify-center
+                    px-[clamp(1rem,1vw,1.5rem)]
+                    h-[clamp(2rem,2.2vw,2.5rem)]
+                    bg-honey/85 rounded-3xl
+                    text-[clamp(0.75rem,0.75vw,1.25rem)]
                         font-semibold
                         tracking-wide
                         text-white
-                        whitespace-nowrap
-                      "
-                        >
-                          {item.category}
-                        </span>
+                        whitespace-nowrap mb-3"
+                    >
+                      {item.category}
+                    </span>
 
-                      </div>
-
-                      {/* Title */}
-
-                      <h2
-                        className="
+                    {/* TITLE */}
+                    <h2
+                      className="
                     text-white
-                    font-bold
+                    font-bold my-4
 
-                    text-[clamp(1.5rem,2vw,2.5rem)]
+                    text-[clamp(1.5rem,1.75vw,2.5rem)]
                     leading-tight
 
                     line-clamp-2
                   "
-                      >
-                        {item.title}
-                      </h2>
-                    </div>
-                    {/* Time */}
+                    >
+                      {item.title}
+                    </h2>
 
+                    {/* description & TIME */}
                     <p
                       className="
-                    mt-4
-
-                    text-[clamp(0.85rem,0.7vw,1.5rem)]
-
-                    text-white/60
-                  "
+                    text-[clamp(0.85rem,0.7vw,1.5rem)] 
+                    text-white/60 absolute bottom-7
+                    "
                     >
                       {item.date} • {item.time}
                     </p>
-
                   </div>
-
                 </Link>
-
               ))}
-
             </div>
           </div>
         </div>
-        <div className="max-h-[clamp(50rem,10vw,77.5rem)] my-25 mx-auto">
+      </div>
+      <div className="w-full max-w-500 mx-auto px-5 sm:px-8 -mt-24 relative z-10">
+        <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
           <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
-            <span className="text-white">Month Ago</span>
-            <span className="text-white-500"> - Month 2</span>
+            First Mid Year
           </h3>
-          <div className="overflow-x-auto scrollbar-hidden pt-5">
 
-            <div className="flex gap-6 snap-x snap-mandatory pb-5">
-
+          <div className="scrollbar-hidden overflow-x-auto py-5">
+            <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
               {monthAgo.map((item) => (
-
                 <Link
                   key={item.id}
                   to={item.link}
                   onMouseMove={handleMove}
                   onMouseLeave={handleLeave}
                   className="
-                glow-card
-                shrink-0
-                snap-start
+  glow-card
+  shrink-0
+  snap-start
 
-                w-[clamp(18rem,22vw,30rem)] 
-                aspect-4/5
+  w-[clamp(18rem,22vw,30rem)]
+  aspect-4/5
 
-                overflow-hidden
-                rounded-3xl
+  overflow-hidden
+  rounded-3xl
+  border
+  border-white/10
+  bg-choco
 
-                border
-                border-white/10
+  transition-all
+  duration-300
 
-                bg-choco
-
-                transition-all
-                duration-250
-
-                hover:-translate-y-3
-                hover:shadow-2xl
-              "
+  hover:z-10
+  hover:-translate-y-4
+  hover:shadow-2xl
+"
                 >
-
                   {/* IMAGE */}
+                  <div className="absolute inset-0 h-[70%] w-full">
+                    <img
+                      src={hero}
+                      alt={item.title}
+                      className="block h-full w-full object-cover selected-none"
+                    />
 
-                  <div className="relative h-[70%]">
-                    <img src={hero}
-                      alt="Hero" className="block w-full h-full object-cover selected-none" />
-                    <div className="absolute inset-0 translate-y-px w-full 
-                h-full bg-linear-to-t from-choco to-choco/25" />
+                    <div
+                      className="absolute inset-0 translate-y-px h-full 
+                    w-full bg-linear-to-t from-choco to-choco/25"
+                    />
                   </div>
 
                   {/* OVERLAY */}
@@ -387,87 +351,51 @@ function Home() {
                   />
 
                   {/* CONTENT */}
-
-                  <div
-                    className="
-                  absolute
-                  inset-0
-                  z-10
-
-                  flex
-                  flex-col
-                  justify-end
-
-                  p-5
-                "
-                  >
-
-
-                    <div className="-translate-y-[clamp(0.75rem,2.5vw,5rem)]">
-
-                      {/* Tag */}
-                      <div className="flex items-center mb-[clamp(0.75rem,1vw,1.25rem)]">
-
-                        <span
-                          className="
-                        inline-flex
-                        items-center
-                        justify-center
-
-                        h-[clamp(2rem,2.2vw,2.5rem)]
-                        px-[clamp(1rem,1vw,1.5rem)]
-
-                        rounded-full
-                        bg-honey/85
-
-                        text-[clamp(0.75rem,0.75vw,1.25rem)]
+                  <div className="absolute inset-0 z-10 px-10 top-60 bottom-0 text-white p-5">
+                    {/* time */}
+                    <span
+                      className="inline-flex 
+                    items-center
+                    justify-center
+                    px-[clamp(1rem,1vw,1.5rem)]
+                    h-[clamp(2rem,2.2vw,2.5rem)]
+                    bg-honey/85 rounded-3xl
+                    text-[clamp(0.75rem,0.75vw,1.25rem)]
                         font-semibold
                         tracking-wide
                         text-white
-                        whitespace-nowrap
-                      "
-                        >
-                          {item.category}
-                        </span>
+                        whitespace-nowrap mb-3"
+                    >
+                      {item.category}
+                    </span>
 
-                      </div>
-
-                      {/* Title */}
-
-                      <h2
-                        className="
+                    {/* TITLE */}
+                    <h2
+                      className="
                     text-white
-                    font-bold
+                    font-bold my-4
 
-                    text-[clamp(1.5rem,2vw,2.5rem)]
+                    text-[clamp(1.5rem,1.75vw,2.5rem)]
                     leading-tight
 
                     line-clamp-2
                   "
-                      >
-                        {item.title}
-                      </h2>
-                    </div>
-                    {/* Time */}
+                    >
+                      {item.title}
+                    </h2>
 
+                    {/* description & TIME */}
                     <p
                       className="
-                    mt-4
-
-                    text-[clamp(0.85rem,0.7vw,1.5rem)]
-
-                    text-white/60
-                  "
+                    text-[clamp(0.85rem,0.7vw,1.5rem)] 
+                    text-white/60 absolute bottom-7
+                    "
                     >
                       {item.date} • {item.time}
                     </p>
-
                   </div>
-
                 </Link>
-
               ))}
-
             </div>
           </div>
         </div>
@@ -555,64 +483,69 @@ hover:bg-white/90
                 key={index}
                 onClick={() => goToSlide(index)}
                 aria-label={`Go to slide ${index + 1}`}
-                className={`h-2.5 rounded-full transition-all duration-300 ${currentIndex === index
-                  ? "w-8 bg-white"
-                  : "w-2.5 bg-white/40 hover:bg-white/70"
-                  }`}
+                className={`h-2.5 rounded-full transition-all duration-300 ${
+                  currentIndex === index
+                    ? "w-8 bg-white"
+                    : "w-2.5 bg-white/40 hover:bg-white/70"
+                }`}
               />
             ))}
           </div>
         </section>
-        <div className="max-h-[clamp(50rem,45vw,75rem)] w-full mx-auto my-25">
-          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] text-white mb-5">Behind The Events</h3>
-          <div className="overflow-x-auto scrollbar-hidden pt-5">
+        <div className="w-full max-w-500 mx-auto px-5 sm:px-8 -mt-24 relative z-10">
+          <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
+            <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
+              Behind The Event
+            </h3>
 
-            <div className="flex gap-6 snap-x snap-mandatory pb-5">
-
-              {behindTheEvent.map((item) => (
-
-                <Link
-                  key={item.id}
-                  to={item.link}
-                  onMouseMove={handleMove}
-                  onMouseLeave={handleLeave}
-                  className="
-                glow-card
-                shrink-0
-                snap-start
-
-                w-[clamp(18rem,22vw,30rem)] 
-                aspect-4/5
-
-                overflow-hidden
-                rounded-3xl
-
-                border
-                border-white/10
-
-                bg-choco
-
-                transition-all
-                duration-250
-
-                hover:-translate-y-3
-                hover:shadow-2xl
-              "
-                >
-
-                  {/* IMAGE */}
-
-                  <div className="relative h-[70%]">
-                    <img src={hero}
-                      alt="Hero" className="block w-full h-full object-cover selected-none" />
-                    <div className="absolute inset-0 translate-y-px w-full 
-                h-full bg-linear-to-t from-choco to-choco/25" />
-                  </div>
-
-                  {/* OVERLAY */}
-
-                  <div
+            <div className="scrollbar-hidden overflow-x-auto py-5">
+              <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
+                {behindTheEvent.map((item) => (
+                  <Link
+                    key={item.id}
+                    to={item.link}
+                    onMouseMove={handleMove}
+                    onMouseLeave={handleLeave}
                     className="
+  glow-card
+  shrink-0
+  snap-start
+
+  w-[clamp(18rem,22vw,30rem)]
+  aspect-4/5
+
+  overflow-hidden
+  rounded-3xl
+  border
+  border-white/10
+  bg-choco
+
+  transition-all
+  duration-300
+
+  hover:z-10
+  hover:-translate-y-4
+  hover:shadow-2xl
+"
+                  >
+                    {/* IMAGE */}
+                    <div className="absolute inset-0 h-[70%] w-full">
+                      <img
+                        src={hero}
+                        alt={item.title}
+                        className="block h-full w-full object-cover selected-none"
+                      />
+
+                      <div
+                        className="absolute inset-0 translate-y-px h-full 
+                    w-full bg-linear-to-t from-choco to-choco/25"
+                      />
+                    </div>
+
+                    {/* OVERLAY */}
+
+                    <div
+                      className="
                   absolute
                   inset-0
 
@@ -621,62 +554,34 @@ hover:bg-white/90
                   via-choco/35
                   to-transparent
                 "
-                  />
+                    />
 
-                  {/* CONTENT */}
-
-                  <div
-                    className="
-                  absolute
-                  inset-0
-                  z-10
-
-                  flex
-                  flex-col
-                  justify-end
-
-                  p-5
-                "
-                  >
-
-
-                    <div className="-translate-y-[clamp(0.75rem,2.5vw,5rem)]">
-
-                      {/* Tag */}
-                      <div className="flex items-center mb-[clamp(0.75rem,1vw,1.25rem)]">
-
-                        <span
-                          className="
-                        inline-flex
-                        items-center
-                        justify-center
-
-                        h-[clamp(2rem,2.2vw,2.5rem)]
-                        px-[clamp(1rem,1vw,1.5rem)]
-
-                        rounded-full
-                        bg-honey/85
-
-                        text-[clamp(0.75rem,0.75vw,1.25rem)]
+                    {/* CONTENT */}
+                    <div className="absolute inset-0 z-10 px-10 top-60 bottom-0 text-white p-5">
+                      {/* time */}
+                      <span
+                        className="inline-flex 
+                    items-center
+                    justify-center
+                    px-[clamp(1rem,1vw,1.5rem)]
+                    h-[clamp(2rem,2.2vw,2.5rem)]
+                    bg-honey/85 rounded-3xl
+                    text-[clamp(0.75rem,0.75vw,1.25rem)]
                         font-semibold
                         tracking-wide
                         text-white
-                        whitespace-nowrap
-                      "
-                        >
-                          {item.category}
-                        </span>
+                        whitespace-nowrap mb-3"
+                      >
+                        {item.category}
+                      </span>
 
-                      </div>
-
-                      {/* Title */}
-
+                      {/* TITLE */}
                       <h2
                         className="
                     text-white
-                    font-bold
+                    font-bold my-4
 
-                    text-[clamp(1.5rem,2vw,2.5rem)]
+                    text-[clamp(1.5rem,1.75vw,2.5rem)]
                     leading-tight
 
                     line-clamp-2
@@ -684,27 +589,20 @@ hover:bg-white/90
                       >
                         {item.title}
                       </h2>
+
+                      {/* description & TIME */}
+                      <p
+                        className="
+                    text-[clamp(0.85rem,0.7vw,1.5rem)] 
+                    text-white/60 absolute bottom-7
+                    "
+                      >
+                        {item.date} • {item.time}
+                      </p>
                     </div>
-                    {/* Time */}
-
-                    <p
-                      className="
-                    mt-4
-
-                    text-[clamp(0.85rem,0.7vw,1.5rem)]
-
-                    text-white/60
-                  "
-                    >
-                      {item.date} • {item.time}
-                    </p>
-
-                  </div>
-
-                </Link>
-
-              ))}
-
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -731,11 +629,9 @@ hover:bg-white/90
           onMouseMove={handleMove}
           onMouseLeave={handleLeave}
         >
-
           {/* Section Label */}
 
           <div className="mb-[clamp(2rem,4vw,3rem)]">
-
             <p
               className="
         uppercase
@@ -753,7 +649,6 @@ hover:bg-white/90
             </p>
 
             <div className="mt-3 h-px w-full bg-white/10" />
-
           </div>
 
           {/* Content */}
@@ -770,7 +665,6 @@ hover:bg-white/90
       items-center
     "
           >
-
             {/* IMAGE */}
 
             <div
@@ -785,7 +679,6 @@ hover:bg-white/90
         aspect-4/3
       "
             >
-
               <img
                 src={hero}
                 alt="Hero"
@@ -802,13 +695,11 @@ hover:bg-white/90
           hover:scale-105
         "
               />
-
             </div>
 
             {/* ARTICLE */}
 
             <div className="flex flex-col h-full">
-
               {/* Badge */}
               <span className="inline-flex w-fit items-center rounded-full bg-white/10 backdrop-blur-xl border border-white/10 px-4 py-2 text-[clamp(.75rem,.8vw,1rem)] font-semibold text-white">
                 FEATURED ARTICLE
@@ -828,7 +719,6 @@ hover:bg-white/90
 
               {/* Description */}
               <div className="mt-6 space-y-5">
-
                 <p
                   className="
         leading-relaxed
@@ -836,12 +726,11 @@ hover:bg-white/90
         text-[clamp(1rem,1.15vw,1.15rem)]
       "
                 >
-                  Kesuksesan bukan hanya berasal dari kecerdasan,
-                  tetapi juga dari disiplin, istiqamah, dan kemauan
-                  untuk terus belajar. Nilai-nilai inilah yang
-                  dibangun dalam kehidupan santri melalui aktivitas
-                  sehari-hari, organisasi, serta pembelajaran yang
-                  konsisten.
+                  Kesuksesan bukan hanya berasal dari kecerdasan, tetapi juga
+                  dari disiplin, istiqamah, dan kemauan untuk terus belajar.
+                  Nilai-nilai inilah yang dibangun dalam kehidupan santri
+                  melalui aktivitas sehari-hari, organisasi, serta pembelajaran
+                  yang konsisten.
                 </p>
 
                 <p
@@ -851,12 +740,10 @@ hover:bg-white/90
         text-[clamp(1rem,1.15vw,1.15rem)]
       "
                 >
-                  Gontor Knowledge menghadirkan berbagai cerita,
-                  pengalaman, dan wawasan yang menginspirasi agar
-                  setiap pembaca dapat mengambil pelajaran dari
-                  perjalanan para santri dan civitas pondok.
+                  Gontor Knowledge menghadirkan berbagai cerita, pengalaman, dan
+                  wawasan yang menginspirasi agar setiap pembaca dapat mengambil
+                  pelajaran dari perjalanan para santri dan civitas pondok.
                 </p>
-
               </div>
 
               {/* Button */}
@@ -890,62 +777,62 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                   Read Article →
                 </button>
               </div>
-
             </div>
-
           </div>
-
         </section>
-        <div className="max-h-[clamp(50rem,45vw,75rem)] w-full mx-auto my-25">
-          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] text-white mb-5">First Mid Year</h3>
-          <div className="overflow-x-auto scrollbar-hidden pt-5">
+        <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
+            <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
+              Behind The Event
+            </h3>
 
-            <div className="flex gap-6 snap-x snap-mandatory pb-5">
-
-              {firstMid.map((item) => (
-
-                <Link
-                  key={item.id}
-                  to={item.link}
-                  onMouseMove={handleMove}
-                  onMouseLeave={handleLeave}
-                  className="
-                glow-card
-                shrink-0
-                snap-start
-
-                w-[clamp(18rem,22vw,30rem)] 
-                aspect-4/5
-
-                overflow-hidden
-                rounded-3xl
-
-                border
-                border-white/10
-
-                bg-choco
-
-                transition-all
-                duration-250
-
-                hover:-translate-y-3
-                hover:shadow-2xl
-              "
-                >
-
-                  {/* IMAGE */}
-
-                  <div className="relative h-[70%]">
-                    <img src={hero}
-                      alt="Hero" className="block w-full h-full object-cover selected-none" />
-                    <div className="absolute inset-0 translate-y-px w-full 
-                h-full bg-linear-to-t from-choco to-choco/25" />
-                  </div>
-
-                  {/* OVERLAY */}
-
-                  <div
+            <div className="scrollbar-hidden overflow-x-auto py-5">
+              <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
+                {firstMid.map((item) => (
+                  <Link
+                    key={item.id}
+                    to={item.link}
+                    onMouseMove={handleMove}
+                    onMouseLeave={handleLeave}
                     className="
+  glow-card
+  shrink-0
+  snap-start
+
+  w-[clamp(18rem,22vw,30rem)]
+  aspect-4/5
+
+  overflow-hidden
+  rounded-3xl
+  border
+  border-white/10
+  bg-choco
+
+  transition-all
+  duration-300
+
+  hover:z-10
+  hover:-translate-y-4
+  hover:shadow-2xl
+"
+                  >
+                    {/* IMAGE */}
+                    <div className="absolute inset-0 h-[70%] w-full">
+                      <img
+                        src={hero}
+                        alt={item.title}
+                        className="block h-full w-full object-cover selected-none"
+                      />
+
+                      <div
+                        className="absolute inset-0 translate-y-px h-full 
+                    w-full bg-linear-to-t from-choco to-choco/25"
+                      />
+                    </div>
+
+                    {/* OVERLAY */}
+
+                    <div
+                      className="
                   absolute
                   inset-0
 
@@ -954,62 +841,34 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                   via-choco/35
                   to-transparent
                 "
-                  />
+                    />
 
-                  {/* CONTENT */}
-
-                  <div
-                    className="
-                  absolute
-                  inset-0
-                  z-10
-
-                  flex
-                  flex-col
-                  justify-end
-
-                  p-5
-                "
-                  >
-
-
-                    <div className="-translate-y-[clamp(0.75rem,2.5vw,5rem)]">
-
-                      {/* Tag */}
-                      <div className="flex items-center mb-[clamp(0.75rem,1vw,1.25rem)]">
-
-                        <span
-                          className="
-                        inline-flex
-                        items-center
-                        justify-center
-
-                        h-[clamp(2rem,2.2vw,2.5rem)]
-                        px-[clamp(1rem,1vw,1.5rem)]
-
-                        rounded-full
-                        bg-honey/85
-
-                        text-[clamp(0.75rem,0.75vw,1.25rem)]
+                    {/* CONTENT */}
+                    <div className="absolute inset-0 z-10 px-10 top-60 bottom-0 text-white p-5">
+                      {/* time */}
+                      <span
+                        className="inline-flex 
+                    items-center
+                    justify-center
+                    px-[clamp(1rem,1vw,1.5rem)]
+                    h-[clamp(2rem,2.2vw,2.5rem)]
+                    bg-honey/85 rounded-3xl
+                    text-[clamp(0.75rem,0.75vw,1.25rem)]
                         font-semibold
                         tracking-wide
                         text-white
-                        whitespace-nowrap
-                      "
-                        >
-                          {item.category}
-                        </span>
+                        whitespace-nowrap mb-3"
+                      >
+                        {item.category}
+                      </span>
 
-                      </div>
-
-                      {/* Title */}
-
+                      {/* TITLE */}
                       <h2
                         className="
                     text-white
-                    font-bold
+                    font-bold my-4
 
-                    text-[clamp(1.5rem,2vw,2.5rem)]
+                    text-[clamp(1.5rem,1.75vw,2.5rem)]
                     leading-tight
 
                     line-clamp-2
@@ -1017,80 +876,75 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                       >
                         {item.title}
                       </h2>
+
+                      {/* description & TIME */}
+                      <p
+                        className="
+                    text-[clamp(0.85rem,0.7vw,1.5rem)] 
+                    text-white/60 absolute bottom-7
+                    "
+                      >
+                        {item.date} • {item.time}
+                      </p>
                     </div>
-                    {/* Time */}
-
-                    <p
-                      className="
-                    mt-4
-
-                    text-[clamp(0.85rem,0.7vw,1.5rem)]
-
-                    text-white/60
-                  "
-                    >
-                      {item.date} • {item.time}
-                    </p>
-
-                  </div>
-
-                </Link>
-
-              ))}
-
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="max-h-[clamp(50rem,45vw,75rem)] w-full  mx-auto my-25">
-          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] text-white mb-5">Second Mid Year</h3>
-          <div className="overflow-x-auto scrollbar-hidden pt-5">
+        <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
+            <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
+              Behind The Event
+            </h3>
 
-            <div className="flex gap-6 snap-x snap-mandatory pb-5">
-
-              {secondMid.map((item) => (
-
-                <Link
-                  key={item.id}
-                  to={item.link}
-                  onMouseMove={handleMove}
-                  onMouseLeave={handleLeave}
-                  className="
-                glow-card
-                shrink-0
-                snap-start
-
-                w-[clamp(18rem,22vw,30rem)] 
-                aspect-4/5
-
-                overflow-hidden
-                rounded-3xl
-
-                border
-                border-white/10
-
-                bg-choco
-
-                transition-all
-                duration-250
-
-                hover:-translate-y-3
-                hover:shadow-2xl
-              "
-                >
-
-                  {/* IMAGE */}
-
-                  <div className="relative h-[70%]">
-                    <img src={hero}
-                      alt="Hero" className="block w-full h-full object-cover selected-none" />
-                    <div className="absolute inset-0 translate-y-px w-full 
-                h-full bg-linear-to-t from-choco to-choco/25" />
-                  </div>
-
-                  {/* OVERLAY */}
-
-                  <div
+            <div className="scrollbar-hidden overflow-x-auto py-5">
+              <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
+                {secondMid.map((item) => (
+                  <Link
+                    key={item.id}
+                    to={item.link}
+                    onMouseMove={handleMove}
+                    onMouseLeave={handleLeave}
                     className="
+  glow-card
+  shrink-0
+  snap-start
+
+  w-[clamp(18rem,22vw,30rem)]
+  aspect-4/5
+
+  overflow-hidden
+  rounded-3xl
+  border
+  border-white/10
+  bg-choco
+
+  transition-all
+  duration-300
+
+  hover:z-10
+  hover:-translate-y-4
+  hover:shadow-2xl
+"
+                  >
+                    {/* IMAGE */}
+                    <div className="absolute inset-0 h-[70%] w-full">
+                      <img
+                        src={hero}
+                        alt={item.title}
+                        className="block h-full w-full object-cover selected-none"
+                      />
+
+                      <div
+                        className="absolute inset-0 translate-y-px h-full 
+                    w-full bg-linear-to-t from-choco to-choco/25"
+                      />
+                    </div>
+
+                    {/* OVERLAY */}
+
+                    <div
+                      className="
                   absolute
                   inset-0
 
@@ -1099,62 +953,34 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                   via-choco/35
                   to-transparent
                 "
-                  />
+                    />
 
-                  {/* CONTENT */}
-
-                  <div
-                    className="
-                  absolute
-                  inset-0
-                  z-10
-
-                  flex
-                  flex-col
-                  justify-end
-
-                  p-5
-                "
-                  >
-
-
-                    <div className="-translate-y-[clamp(0.75rem,2.5vw,5rem)]">
-
-                      {/* Tag */}
-                      <div className="flex items-center mb-[clamp(0.75rem,1vw,1.25rem)]">
-
-                        <span
-                          className="
-                        inline-flex
-                        items-center
-                        justify-center
-
-                        h-[clamp(2rem,2.2vw,2.5rem)]
-                        px-[clamp(1rem,1vw,1.5rem)]
-
-                        rounded-full
-                        bg-honey/85
-
-                        text-[clamp(0.75rem,0.75vw,1.25rem)]
+                    {/* CONTENT */}
+                    <div className="absolute inset-0 z-10 px-10 top-60 bottom-0 text-white p-5">
+                      {/* time */}
+                      <span
+                        className="inline-flex 
+                    items-center
+                    justify-center
+                    px-[clamp(1rem,1vw,1.5rem)]
+                    h-[clamp(2rem,2.2vw,2.5rem)]
+                    bg-honey/85 rounded-3xl
+                    text-[clamp(0.75rem,0.75vw,1.25rem)]
                         font-semibold
                         tracking-wide
                         text-white
-                        whitespace-nowrap
-                      "
-                        >
-                          {item.category}
-                        </span>
+                        whitespace-nowrap mb-3"
+                      >
+                        {item.category}
+                      </span>
 
-                      </div>
-
-                      {/* Title */}
-
+                      {/* TITLE */}
                       <h2
                         className="
                     text-white
-                    font-bold
+                    font-bold my-4
 
-                    text-[clamp(1.5rem,2vw,2.5rem)]
+                    text-[clamp(1.5rem,1.75vw,2.5rem)]
                     leading-tight
 
                     line-clamp-2
@@ -1162,30 +988,22 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                       >
                         {item.title}
                       </h2>
+
+                      {/* description & TIME */}
+                      <p
+                        className="
+                    text-[clamp(0.85rem,0.7vw,1.5rem)] 
+                    text-white/60 absolute bottom-7
+                    "
+                      >
+                        {item.date} • {item.time}
+                      </p>
                     </div>
-                    {/* Time */}
-
-                    <p
-                      className="
-                    mt-4
-
-                    text-[clamp(0.85rem,0.7vw,1.5rem)]
-
-                    text-white/60
-                  "
-                    >
-                      {item.date} • {item.time}
-                    </p>
-
-                  </div>
-
-                </Link>
-
-              ))}
-
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
         <div
           className="
         grid
@@ -1197,7 +1015,6 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
         my-[clamp(3rem,5vw,6rem)]
       "
         >
-
           {/* ===================== TRENDING ===================== */}
 
           <div
@@ -1216,16 +1033,10 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
             onMouseMove={handleMove}
             onMouseLeave={handleLeave}
           >
-
-            <Trending
-              title="Trending Now"
-              to="/trending"
-            />
+            <Trending title="Trending Now" to="/trending" />
 
             <div className="mt-[clamp(1.5rem,2vw,2.25rem)] flex flex-col">
-
               {trendingHome.map((item) => (
-
                 <Link
                   key={item.id}
                   to={item.link}
@@ -1246,7 +1057,6 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                 last:border-none
               "
                 >
-
                   {/* Rank */}
 
                   <span
@@ -1296,7 +1106,6 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                   {/* Text */}
 
                   <div className="flex-1 min-w-0">
-
                     <h4
                       className="
                     line-clamp-2
@@ -1334,15 +1143,10 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
 
                       {item.views}
                     </p>
-
                   </div>
-
                 </Link>
-
               ))}
-
             </div>
-
           </div>
 
           {/* ===================== CATEGORY ===================== */}
@@ -1363,11 +1167,7 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
             onMouseMove={handleMove}
             onMouseLeave={handleLeave}
           >
-
-            <Trending
-              title="Category"
-              to="/all"
-            />
+            <Trending title="Category" to="/all" />
 
             <div
               className="
@@ -1376,14 +1176,10 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
             space-y-[clamp(1rem,1.3vw,1.75rem)]
           "
             >
-
               {categoryHome.map((item) => {
-
                 const Icon = item.icon;
 
-
                 return (
-
                   <Link
                     key={item.id}
                     to={`/category/${item.name.toLowerCase()}`}
@@ -1398,7 +1194,6 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                   gap-[clamp(.9rem,1.2vw,1.5rem)]
                 "
                   >
-
                     <div
                       className="
                     flex
@@ -1426,7 +1221,6 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                         borderColor: item.color,
                       }}
                     >
-
                       <Icon
                         className="
                       w-[clamp(1.1rem,1.4vw,1.4rem)]
@@ -1436,7 +1230,6 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                           color: item.color,
                         }}
                       />
-
                     </div>
 
                     <span
@@ -1456,21 +1249,15 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                     >
                       {item.name}
                     </span>
-
                   </Link>
-
                 );
-
               })}
-
             </div>
-
           </div>
-
         </div>
       </div>
-    </div >
-  )
+    </div>
+  );
 }
 
 export default Home;

@@ -6,10 +6,7 @@ import ContactCard from "../components/ContactCard";
 import ChatBubble from "../components/ChatBubble";
 import ChatInput from "../components/ChatInput";
 
-import {
-  faqItems,
-  initialMessages,
-} from "../data/forum_data.js";
+import { faqItems, initialMessages } from "../data/forum_data.js";
 
 function Forum() {
   const [messages, setMessages] = useState(initialMessages);
@@ -54,7 +51,6 @@ function Forum() {
   return (
     <div className="relative z-10 text-white">
       <div className="w-full max-w-500 mx-auto px-5 sm:px-8 relative z-10">
-
         {/* CONTAINER */}
 
         <div
@@ -74,7 +70,6 @@ function Forum() {
           py-5
         "
         >
-
           <ForumHeader />
 
           <div
@@ -96,7 +91,6 @@ function Forum() {
             items-start
           "
           >
-
             {/* FAQ */}
 
             <aside
@@ -112,7 +106,6 @@ function Forum() {
               md:self-start
             "
             >
-
               <div
                 className="
                 flex
@@ -141,7 +134,6 @@ xl:h-[calc(100vh-200px)]
                 min-[1920px]:h-224
               "
               >
-
                 <div
                   className="
                   p-4
@@ -151,7 +143,6 @@ xl:h-[calc(100vh-200px)]
                   xl:p-8
                 "
                 >
-
                   <h2
                     className="
                     text-xl
@@ -176,10 +167,9 @@ xl:h-[calc(100vh-200px)]
                     text-white/65
                   "
                   >
-                    Temukan jawaban umum mengenai forum, aturan,
-                    serta cara berinteraksi dengan baik.
+                    Temukan jawaban umum mengenai forum, aturan, serta cara
+                    berinteraksi dengan baik.
                   </p>
-
                 </div>
 
                 {/* SCROLL FAQ */}
@@ -205,7 +195,6 @@ xl:h-[calc(100vh-200px)]
                   scrollbar-track-transparent
                 "
                 >
-
                   {faqItems.map((item, index) => (
                     <FAQItem
                       key={item.question}
@@ -216,11 +205,8 @@ xl:h-[calc(100vh-200px)]
                   ))}
 
                   <ContactCard />
-
                 </div>
-
               </div>
-
             </aside>
 
             {/* CHAT */}
@@ -234,7 +220,6 @@ xl:h-[calc(100vh-200px)]
               min-w-0
             "
             >
-
               <div
                 className="
                 flex
@@ -280,16 +265,11 @@ xl:h-[calc(100vh-200px)]
                 "
                 >
                   <div className="space-y-4">
-
                     {messages.map((msg) => (
-                      <ChatBubble
-                        key={msg.id}
-                        message={msg}
-                      />
+                      <ChatBubble key={msg.id} message={msg} />
                     ))}
 
                     <div ref={messagesEndRef} />
-
                   </div>
                 </div>
 
@@ -311,13 +291,9 @@ xl:h-[calc(100vh-200px)]
                     onSend={handleSend}
                   />
                 </div>
-
               </div>
-
             </section>
-
           </div>
-
         </div>
       </div>
     </div>

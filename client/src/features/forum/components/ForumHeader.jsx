@@ -10,8 +10,9 @@ function ForumHeader() {
               General Forum
             </h1>
             <p className="mt-3 max-w-3xl text-[clamp(0.9rem,1.15vw,1.05rem)] leading-relaxed text-white/70">
-              An open discussion space for all participants. Share your ideas, ask questions,
-              and engage with each other in meaningful conversations.
+              An open discussion space for all participants. Share your ideas,
+              ask questions, and engage with each other in meaningful
+              conversations.
             </p>
           </div>
 
