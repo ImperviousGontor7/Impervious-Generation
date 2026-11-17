@@ -10,6 +10,17 @@ import knowledge from "../data/view_all/knowledge.js";
 import categories from "../data/view_all/categories.js";
 import allNews from "../data/view_all/all_news.js";
 import { categoryHome } from "../data/category_home.js";
+import featuredStories from "../data/view_all/featured_stories.js";
+import rootSlider from "../data/view_all/root_slider.js";
+import behindTheScene from "../data/view_all/behind_the_scene.js";
+import isidental from "../data/view_all/isidental.js";
+import agendaFeatured from "../data/view_all/agenda_featured.js";
+import agendaFirstMidJournal from "../data/view_all/agenda_first_mid_journal.js";
+import agendaSecondMidJournal from "../data/view_all/agenda_second_mid_journal.js";
+import agendaFinalExam from "../data/view_all/agenda_ujian_kelas_akhir_kmi.js";
+import agendaArRuqiyy from "../data/view_all/agenda_ar_ruqiyy.js";
+import agendaImtihan from "../data/view_all/agenda_imtihan_akhir_tahun.js";
+import agendaPosterGallery from "../data/view_all/agenda_poster_gallery.js";
 
 const sections = {
   "first-mid-year": firstMid,
@@ -19,6 +30,17 @@ const sections = {
   "knowledge": knowledge,
   "categories": categories,
   "all": allNews,
+  "featured-stories": featuredStories,
+  "root-slider": rootSlider,
+  "behind-the-scene": behindTheScene,
+  "isidental": isidental,
+  "agenda-featured": agendaFeatured,
+  "agenda-first-mid-journal": agendaFirstMidJournal,
+  "agenda-second-mid-journal": agendaSecondMidJournal,
+  "agenda-ujian-kelas-akhir-kmi": agendaFinalExam,
+  "agenda-ar-ruqiyy": agendaArRuqiyy,
+  "agenda-imtihan-akhir-tahun": agendaImtihan,
+  "agenda-poster-gallery": agendaPosterGallery,
 };
 
 function ViewAllPage() {
@@ -86,8 +108,10 @@ function ViewAllPage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item, index) => {
             const itemSlug = item.slug ?? String(item.title ?? item.id ?? "").toLocaleLowerCase("id-ID").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-            const isExistingNewsRoute = typeof item.link === "string" && item.link.startsWith("/news/");
-            const link = isExistingNewsRoute ? item.link : itemSlug ? `/news/${itemSlug}` : "#";
+            const isExistingInternalRoute =
+              typeof item.link === "string" &&
+              (item.link.startsWith("/news/") || item.link.startsWith("/category/"));
+            const link = isExistingInternalRoute ? item.link : itemSlug ? `/news/${itemSlug}` : "#";
             const image = item.image ?? item.thumbnail ?? item.banner;
             const itemCategory = item.category?.name ?? item.category ?? item.subtitle ?? "Archive";
             const excerpt = item.description ?? item.excerpt ?? item.quote ?? "";
@@ -98,6 +122,11 @@ function ViewAllPage() {
                   <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-marigold">{itemCategory}</p>
                   <h2 className="mt-2 line-clamp-2 text-base font-semibold">{item.title ?? item.name}</h2>
                   {excerpt && <p className="mt-2 line-clamp-3 text-xs leading-6 text-white/55">{excerpt}</p>}
+                  {(item.dateLabel || item.date || item.time) && (
+                    <p className="mt-3 text-[11px] text-white/40">
+                      {[item.dateLabel ?? item.date, item.time].filter(Boolean).join(" · ")}
+                    </p>
+                  )}
                   {section === "trending" && <p className="mt-3 text-[11px] text-white/45">{Number(item.views ?? 0).toLocaleString("id-ID")} views · Rank #{index + 1}</p>}
                   <span className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-marigold">Open <FiArrowUpRight /></span>
                 </div>

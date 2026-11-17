@@ -23,6 +23,21 @@ function getAgendaStoryLink(slide) {
   return `/news/${slug || "agenda"}`;
 }
 
+function ViewAllHeading({ title, to }) {
+  return (
+    <div className="mb-[clamp(1.5rem,2vw,2.75rem)] flex items-center justify-between gap-4">
+      <h3 className="text-[clamp(1.25rem,1.8vw,2.5rem)]">{title}</h3>
+      <Link
+        to={to}
+        className="group inline-flex shrink-0 items-center gap-2 text-[clamp(.75rem,.9vw,1rem)] font-semibold text-white/55 transition-colors hover:text-[#D9A14F]"
+      >
+        View All
+        <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+      </Link>
+    </div>
+  );
+}
+
 function Agenda() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedPoster, setSelectedPoster] = useState(null);
@@ -98,6 +113,12 @@ function Agenda() {
   return (
     <div>
       <section className="relative w-full overflow-hidden">
+        <Link
+          to="/view-all/agenda-featured"
+          className="absolute right-4 top-4 z-30 rounded-full border border-white/25 bg-black/45 px-4 py-2 text-xs font-semibold text-white backdrop-blur-md transition hover:border-[#D9A14F] hover:text-[#D9A14F] sm:right-6 sm:top-6 sm:text-sm"
+        >
+          View All Agenda →
+        </Link>
         <div
           className="flex transition-transform duration-700 ease-in-out will-change-transform"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -303,9 +324,7 @@ function Agenda() {
 
         <div className="mx-auto my-[clamp(3rem,6vw,8rem)]">
           <div className="mx-auto my-25">
-            <h3 className="mb-[clamp(1.5rem,2vw,2.75rem)] text-[clamp(1.25rem,1.8vw,2.5rem)]">
-              First Mid Journal
-            </h3>
+            <ViewAllHeading title="First Mid Journal" to="/view-all/agenda-first-mid-journal" />
 
             <div className="scrollbar-hidden overflow-x-auto pt-[clamp(.5rem,1vw,1.5rem)]">
               <div className="flex snap-x snap-mandatory gap-[clamp(1rem,1.5vw,2rem)] pb-[clamp(1rem,2vw,2rem)]">
@@ -473,9 +492,7 @@ function Agenda() {
           </div>
 
           <div className="mx-auto my-25">
-            <h3 className="mb-[clamp(1.5rem,2vw,2.75rem)] text-[clamp(1.25rem,1.8vw,2.5rem)]">
-              Second Mid Journal
-            </h3>
+            <ViewAllHeading title="Second Mid Journal" to="/view-all/agenda-second-mid-journal" />
 
             <div className="scrollbar-hidden overflow-x-auto pt-[clamp(.5rem,1vw,1.5rem)]">
               <div className="flex snap-x snap-mandatory gap-[clamp(1rem,1.5vw,2rem)] pb-[clamp(1rem,2vw,2rem)]">
@@ -820,9 +837,7 @@ function Agenda() {
 
           <div className="mx-auto my-[clamp(3rem,6vw,8rem)]">
             <div className="mx-auto my-25">
-              <h3 className="mb-[clamp(1.5rem,2vw,2.75rem)] text-[clamp(1.25rem,1.8vw,2.5rem)]">
-                Panitia Ujian Kelas Akhir KMI
-              </h3>
+              <ViewAllHeading title="Panitia Ujian Kelas Akhir KMI" to="/view-all/agenda-ujian-kelas-akhir-kmi" />
 
               <div className="scrollbar-hidden overflow-x-auto pt-[clamp(.5rem,1vw,1.5rem)]">
                 <div className="flex snap-x snap-mandatory gap-[clamp(1rem,1.5vw,2rem)] pb-[clamp(1rem,2vw,2rem)]">
@@ -996,9 +1011,7 @@ function Agenda() {
 
           <div className="mx-auto my-[clamp(3rem,6vw,8rem)]">
             <div className="mx-auto my-25">
-              <h3 className="mb-[clamp(1.5rem,2vw,2.75rem)] text-[clamp(1.25rem,1.8vw,2.5rem)]">
-                Ar-Ruqiyy
-              </h3>
+              <ViewAllHeading title="Ar-Ruqiyy" to="/view-all/agenda-ar-ruqiyy" />
 
               <div className="scrollbar-hidden overflow-x-auto pt-[clamp(.5rem,1vw,1.5rem)]">
                 <div className="flex snap-x snap-mandatory gap-[clamp(1rem,1.5vw,2rem)] pb-[clamp(1rem,2vw,2rem)]">
@@ -1167,9 +1180,7 @@ function Agenda() {
           </div>
           <div className="mx-auto my-[clamp(3rem,6vw,8rem)]">
             <div className="mx-auto my-25">
-              <h3 className="mb-[clamp(1.5rem,2vw,2.75rem)] text-[clamp(1.25rem,1.8vw,2.5rem)]">
-                (Panitia Imtihan Akhir Tahun)
-              </h3>
+              <ViewAllHeading title="Panitia Imtihan Akhir Tahun" to="/view-all/agenda-imtihan-akhir-tahun" />
 
               <div className="scrollbar-hidden overflow-x-auto pt-[clamp(.5rem,1vw,1.5rem)]">
                 <div className="flex snap-x snap-mandatory gap-[clamp(1rem,1.5vw,2rem)] pb-[clamp(1rem,2vw,2rem)]">
@@ -1342,18 +1353,25 @@ function Agenda() {
 ========================= */}
 
           <div className="mx-auto my-[clamp(3rem,6vw,8rem)]">
-            <div className="mb-[clamp(1.5rem,2vw,2.75rem)]">
-              <p className="mb-3 text-[clamp(.7rem,.8vw,1rem)] font-semibold uppercase tracking-[0.4em] text-[#D9A14F]">
-                VISUAL ARCHIVE
-              </p>
-
-              <h3 className="text-[clamp(1.5rem,2.5vw,3rem)] font-bold">
-                Agenda Poster Gallery
-              </h3>
-
-              <p className="mt-3 text-sm text-white/50">
-                A collection of moments, stories, and celebrations.
-              </p>
+            <div className="mb-[clamp(1.5rem,2vw,2.75rem)] flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="mb-3 text-[clamp(.7rem,.8vw,1rem)] font-semibold uppercase tracking-[0.4em] text-[#D9A14F]">
+                  VISUAL ARCHIVE
+                </p>
+                <h3 className="text-[clamp(1.5rem,2.5vw,3rem)] font-bold">
+                  Agenda Poster Gallery
+                </h3>
+                <p className="mt-3 text-sm text-white/50">
+                  A collection of moments, stories, and celebrations.
+                </p>
+              </div>
+              <Link
+                to="/view-all/agenda-poster-gallery"
+                className="group inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-white/55 transition-colors hover:text-[#D9A14F]"
+              >
+                View All Posters
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </Link>
             </div>
           </div>
 

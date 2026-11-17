@@ -107,6 +107,25 @@ function useInfiniteCarousel(slides, autoPlayMs = 0) {
 }
 
 // ==========================================
+// VIEW ALL SECTION HEADING
+// ==========================================
+
+function ViewAllHeading({ title, to }) {
+  return (
+    <div className="mb-5 flex items-center justify-between gap-4">
+      <h3 className="text-[clamp(1.25rem,2vw,2.5rem)]">{title}</h3>
+      <Link
+        to={to}
+        className="group inline-flex shrink-0 items-center gap-2 text-[clamp(.75rem,.9vw,1rem)] font-semibold text-white/55 transition-colors hover:text-marigold"
+      >
+        View All
+        <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+      </Link>
+    </div>
+  );
+}
+
+// ==========================================
 // HOME COMPONENT
 // ==========================================
 
@@ -207,6 +226,12 @@ function Home() {
                     >
                       {slide.buttonPrimary.text}
                     </Link>
+                    <Link
+                      to="/view-all/featured-stories"
+                      className="inline-flex items-center justify-center rounded-full border border-white/35 px-[clamp(1.25rem,3vw,2.5rem)] py-[clamp(.7rem,1vw,1rem)] text-[clamp(.75rem,1vw,1rem)] font-semibold text-white transition duration-300 hover:border-white hover:bg-white/10"
+                    >
+                      View All Stories
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -261,9 +286,7 @@ function Home() {
       </section>
       <div className="w-full max-w-500 mx-auto px-5 sm:px-8 my-15 relative z-10">
         <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
-          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
-            First Mid Year
-          </h3>
+          <ViewAllHeading title="First Mid Year" to="/view-all/first-mid-year" />
 
           <div className="scrollbar-hidden overflow-x-auto py-5">
             <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
@@ -412,9 +435,7 @@ function Home() {
       </div>
       <div className="w-full max-w-500 mx-auto px-5 sm:px-8 my-15 relative z-10">
         <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
-          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
-            Second Mid Year
-          </h3>
+          <ViewAllHeading title="Second Mid Year" to="/view-all/second-mid-year" />
 
           <div className="scrollbar-hidden overflow-x-auto py-5">
             <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
@@ -561,6 +582,12 @@ function Home() {
           </div>
         </div>
         <section className="relative w-full overflow-hidden rounded-4xl border">
+          <Link
+            to="/view-all/root-slider"
+            className="absolute right-4 top-4 z-30 rounded-full border border-white/25 bg-black/45 px-4 py-2 text-xs font-semibold text-white backdrop-blur-md transition hover:border-marigold hover:text-marigold sm:right-6 sm:top-6 sm:text-sm"
+          >
+            View All Events →
+          </Link>
           {/* ROOT SLIDER */}
           <div
             onTransitionEnd={rootCarousel.handleTransitionEnd}
@@ -661,9 +688,7 @@ function Home() {
         </section>
         <div className="w-full max-w-500 mx-auto px-5 sm:px-8 my-15 relative z-10">
           <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
-            <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
-              Multimedia Archive
-            </h3>
+            <ViewAllHeading title="Multimedia Archive" to="/view-all/multimedia" />
 
             <div className="scrollbar-hidden overflow-x-auto py-5">
               <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
@@ -836,24 +861,19 @@ function Home() {
           {/* Section Label */}
 
           <div className="mb-[clamp(2rem,4vw,3rem)]">
-            <p
-              className="
-        uppercase
-
-        tracking-[0.5em]
-
-        text-marigold
-
-        font-semibold
-
-        text-[clamp(0.8rem,1.5vw,1.5rem)]
-      "
-            >
-              Gontor Knowledge
-            </p>
-
-            <div className="mt-3 h-px w-full bg-white/10" />
-          </div>
+              <div className="flex items-center justify-between gap-4">
+                <p className="uppercase tracking-[0.5em] text-marigold font-semibold text-[clamp(0.8rem,1.5vw,1.5rem)]">
+                  Gontor Knowledge
+                </p>
+                <Link
+                  to="/view-all/knowledge"
+                  className="group inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-white/55 transition-colors hover:text-marigold"
+                >
+                  View All <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </Link>
+              </div>
+              <div className="mt-3 h-px w-full bg-white/10" />
+            </div>
 
           {/* Content */}
 
@@ -985,9 +1005,7 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
           </div>
         </section>
         <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
-          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">
-            Behind The Scene
-          </h3>
+          <ViewAllHeading title="Behind The Scene" to="/view-all/behind-the-scene" />
 
           <div className="scrollbar-hidden overflow-x-auto py-5">
             <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
@@ -1134,7 +1152,7 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
           </div>
         </div>
         <div className="max-h-[clamp(50rem,45vw,75rem)] my-25 mx-auto">
-          <h3 className="text-[clamp(1.25rem,2vw,2.5rem)] mb-5">Isidental</h3>
+          <ViewAllHeading title="Isidental" to="/view-all/isidental" />
 
           <div className="scrollbar-hidden overflow-x-auto py-5">
             <div className="flex h-full gap-7.5 mx-0 w-full scroll-smooth snap-x snap-mandatory">
@@ -1443,7 +1461,7 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
             onMouseMove={handleMove}
             onMouseLeave={handleLeave}
           >
-            <Trending title="Category" to="/all" />
+            <Trending title="Category" to="/view-all/categories" />
 
             <div
               className="
@@ -1458,7 +1476,7 @@ py-[clamp(0.45rem,0.7vw,0.7rem)]
                 return (
                   <Link
                     key={item.id}
-                    to={`/category/${item.name.toLowerCase()}`}
+                    to={`/category/${item.slug}`}
 
                     className="
                   group

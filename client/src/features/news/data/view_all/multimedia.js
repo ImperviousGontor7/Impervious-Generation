@@ -1,4 +1,9 @@
-import { thisMonth } from "../month_st.js";
-import { monthAgo } from "../month_nd.js";
-export const section = { title: "Multimedia Archive", description: "Kumpulan dokumentasi dan karya visual kegiatan.", items: [...thisMonth, ...monthAgo] };
+import { behindTheEvent } from "../behind_the_events.js";
+
+const section = {
+  title: "Multimedia Archive",
+  description: "Kumpulan dokumentasi visual dan cerita di balik berbagai kegiatan.",
+  items: behindTheEvent,
+};
+
 export default section;
