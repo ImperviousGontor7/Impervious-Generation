@@ -47,6 +47,16 @@ function Committee() {
 
           {/* VERTICAL SCROLL CONTAINER */}
 
+          <div className="mb-4 flex flex-wrap items-end justify-between gap-3 border-b border-white/10 pb-4">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.35em] text-marigold">Behind the Event</p>
+              <h2 className="mt-2 text-xl font-bold sm:text-2xl">Committee Archive</h2>
+            </div>
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/60">
+              {paneldata.length} Records
+            </span>
+          </div>
+
           <div className="max-h-[clamp(30rem,75vh,75rem)] py-7.5 overflow-y-auto overflow-x-hidden scrollbar-hidden">
             <div className="flex flex-col gap-10">
               {paneldata.map((item) => (
@@ -78,6 +88,10 @@ function Committee() {
           hover:shadow-2xl
         "
                 >
+                  <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-marigold/70">
+                    <span>Committee Record</span>
+                    <span>{String(item.id).padStart(2, "0")}</span>
+                  </div>
                   <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
                     {/* EVENT INFORMATION */}
 
@@ -104,7 +118,7 @@ function Committee() {
                       </p>
 
                       <Link
-                        to={item.link}
+                        to={`/news/${String(item.title).toLocaleLowerCase("id-ID").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`}
                         className="
                 inline-flex
                 items-center

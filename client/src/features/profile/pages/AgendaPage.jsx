@@ -10,8 +10,39 @@ import { agendaSlides } from "../stories/agenda_main_slide";
 import Countdown from "../stories/countdown";
 import DualMonthCalendar from "../stories/dual_calendar_month";
 
+function getAgendaStoryLink(slide) {
+  const value = slide.slug ?? slide.title ?? slide.id ?? "agenda";
+  const slug = String(value)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("id-ID")
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return `/news/${slug || "agenda"}`;
+}
+
 function Agenda() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedPoster, setSelectedPoster] = useState(null);
+
+  useEffect(() => {
+    if (!selectedPoster) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setSelectedPoster(null);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedPoster]);
 
   // =========================
   // Auto Slide
@@ -166,7 +197,7 @@ function Agenda() {
                     {/* Buttons */}
                     <div className="mt-[clamp(2rem,3vw,3.5rem)] flex flex-wrap gap-[clamp(.75rem,1vw,1rem)]">
                       <Link
-                        to={slide.buttonPrimary.href}
+                        to={getAgendaStoryLink(slide)}
                         className="
                           inline-flex
                           items-center
@@ -1327,246 +1358,90 @@ function Agenda() {
           </div>
 
           {/* =========================
-    INFINITE POSTER MARQUEE
-========================= */}
-
-          <div
-            className="
-    group
-    relative
-    w-full
-    overflow-hidden
-  "
-          >
+              INFINITE POSTER MARQUEE
+          ========================= */}
+          <div className="my-15 group relative w-full overflow-hidden">
             <style>
-              {`
-      @keyframes agenda-marquee {
-        from {
-          transform: translateX(0);
-        }
-
-        to {
-          transform: translateX(-50%);
-        }
-      }
-    `}
+              {`@keyframes agenda-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}
             </style>
 
-            <div
-              className="
-      flex
-      w-max
-      animate-[agenda-marquee_30s_linear_infinite]
-      will-change-transform
-      group-hover:[animation-play-state:paused]
-      motion-reduce:animate-none
-    "
-            >
+            <div className="flex w-max animate-[agenda-marquee_60s_linear_infinite] will-change-transform group-hover:[animation-play-state:paused] motion-reduce:animate-none">
               {[0, 1].map((groupIndex) => (
                 <div
                   key={groupIndex}
                   aria-hidden={groupIndex === 1}
-                  className="
-          flex
-          shrink-0
-          items-center
-          gap-[clamp(1rem,1.5vw,2rem)]
-          pr-[clamp(1rem,1.5vw,2rem)]
-        "
+                  className="flex shrink-0 items-center gap-[clamp(.5rem,1.5vw,2rem)] pr-[clamp(.5rem,1.5vw,2rem)] py-5"
                 >
                   {marqueeItems.map((item, index) => (
-                    <div
+                    <button
                       key={`${groupIndex}-${item.id}-${index}`}
-                      className="
-              relative
-              aspect-3/4
-              w-[clamp(13rem,18vw,21rem)]
-              shrink-0
-              overflow-hidden
-              rounded-[clamp(1rem,1.5vw,2rem)]
-              border
-              border-white/10
-              bg-choco
-              transition-all
-              duration-500
-              hover:-translate-y-2
-              hover:border-[#D9A14F]
-            "
+                      type="button"
+                      tabIndex={groupIndex === 1 ? -1 : 0}
+                      onClick={() => setSelectedPoster(item)}
+                      aria-label={`Perbesar poster ${item.title}`}
+                      className="relative aspect-3/4 w-[clamp(7.5rem,30vw,10rem)] shrink-0 overflow-hidden rounded-xl border 
+                      border-white/10 bg-choco text-left transition-all duration-300 hover:-translate-y-5 
+                      hover:border-[#D9A14F] sm:w-[clamp(10rem,18vw,15rem)] sm:rounded-2xl lg:w-[clamp(13rem,18vw,21rem)] lg:rounded-3xl"
                     >
-                      {/* POSTER IMAGE */}
                       <img
                         src={item.image}
                         alt={groupIndex === 1 ? "" : item.title}
                         draggable="false"
-                        className="
-                h-full
-                w-full
-                object-cover
-                transition-transform
-                duration-700
-                hover:scale-105
-              "
+                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-115"
                       />
-
-                      {/* DARK OVERLAY */}
-                      <div
-                        className="
-                absolute
-                inset-0
-                bg-linear-to-t
-                from-black/90
-                via-black/10
-                to-transparent
-              "
-                      />
-
-                      {/* POSTER TITLE */}
-                      <div
-                        className="
-                absolute
-                inset-x-0
-                bottom-0
-                p-[clamp(1rem,1.5vw,2rem)]
-              "
-                      >
-                        <h4
-                          className="
-                  text-[clamp(1rem,1.4vw,1.6rem)]
-                  font-bold
-                  leading-tight
-                  text-white
-                "
-                        >
+                      <span className="absolute inset-0 bg-linear-to-t from-black/90 via-black/10 to-transparent" />
+                      <span className="absolute inset-x-0 bottom-0 p-3 sm:p-4 lg:p-6">
+                        <span className="block text-xs font-bold leading-tight text-white sm:text-base lg:text-xl">
                           {item.title}
-                        </h4>
-
-                        <div className="mt-3 h-px w-12 bg-[#D9A14F]" />
-                      </div>
-                    </div>
+                        </span>
+                        <span className="mt-2 block h-px w-8 bg-[#D9A14F]" />
+                      </span>
+                    </button>
                   ))}
                 </div>
               ))}
             </div>
           </div>
           {/* =========================
-    INFINITE POSTER MARQUEE
-========================= */}
-
-          <div
-            className="
-    my-15
-    group
-    relative
-    w-full
-    overflow-hidden
-  "
-          >
+              INFINITE POSTER MARQUEE
+          ========================= */}
+          <div className="my-15 group relative w-full overflow-hidden">
             <style>
-              {`
-      @keyframes agenda-marquee {
-        from {
-          transform: translateX(0);
-        }
-
-        to {
-          transform: translateX(-50%);
-        }
-      }
-    `}
+              {`@keyframes agenda-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}
             </style>
 
-            <div
-              className="
-      flex
-      w-max
-      animate-[agenda-marquee_30s_linear_infinite]
-      will-change-transform
-      group-hover:[animation-play-state:paused]
-      motion-reduce:animate-none
-    "
-            >
+            <div className="flex w-max animate-[agenda-marquee_60s_linear_infinite] will-change-transform group-hover:[animation-play-state:paused] motion-reduce:animate-none">
               {[0, 1].map((groupIndex) => (
                 <div
                   key={groupIndex}
                   aria-hidden={groupIndex === 1}
-                  className="
-          flex
-          shrink-0
-          items-center
-          gap-[clamp(1rem,1.5vw,2rem)]
-          pr-[clamp(1rem,1.5vw,2rem)]
-        "
+                  className="flex shrink-0 items-center gap-[clamp(.5rem,1.5vw,2rem)] pr-[clamp(.5rem,1.5vw,2rem)] py-5"
                 >
                   {marqueeItems.map((item, index) => (
-                    <div
+                    <button
                       key={`${groupIndex}-${item.id}-${index}`}
-                      className="
-              relative
-              aspect-3/4
-              w-[clamp(13rem,18vw,21rem)]
-              shrink-0
-              overflow-hidden
-              rounded-[clamp(1rem,1.5vw,2rem)]
-              border
-              border-white/10
-              bg-choco
-              transition-all
-              duration-500
-              py-3
-              hover:-translate-y-2
-              hover:border-[#D9A14F]
-            "
+                      type="button"
+                      tabIndex={groupIndex === 1 ? -1 : 0}
+                      onClick={() => setSelectedPoster(item)}
+                      aria-label={`Perbesar poster ${item.title}`}
+                      className="relative aspect-3/4 w-[clamp(7.5rem,30vw,10rem)] shrink-0 overflow-hidden rounded-xl border 
+                      border-white/10 bg-choco text-left transition-all duration-300 hover:-translate-y-5 
+                      hover:border-[#D9A14F] sm:w-[clamp(10rem,18vw,15rem)] sm:rounded-2xl lg:w-[clamp(13rem,18vw,21rem)] lg:rounded-3xl"
                     >
-                      {/* POSTER IMAGE */}
                       <img
                         src={item.image}
                         alt={groupIndex === 1 ? "" : item.title}
                         draggable="false"
-                        className="
-                h-full
-                w-full
-                object-cover
-                transition-transform
-                duration-700
-                hover:scale-105
-              "
+                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-115"
                       />
-
-                      {/* DARK OVERLAY */}
-                      <div
-                        className="
-                absolute
-                inset-0
-                bg-linear-to-t
-                from-black/90
-                via-black/10
-                to-transparent
-              "
-                      />
-
-                      {/* POSTER TITLE */}
-                      <div
-                        className="
-                absolute
-                inset-x-0
-                bottom-0
-                p-[clamp(1rem,1.5vw,2rem)]
-              "
-                      >
-                        <h4
-                          className="
-                  text-[clamp(1rem,1.4vw,1.6rem)]
-                  font-bold
-                  leading-tight
-                  text-white
-                "
-                        >
+                      <span className="absolute inset-0 bg-linear-to-t from-black/90 via-black/10 to-transparent" />
+                      <span className="absolute inset-x-0 bottom-0 p-3 sm:p-4 lg:p-6">
+                        <span className="block text-xs font-bold leading-tight text-white sm:text-base lg:text-xl">
                           {item.title}
-                        </h4>
-
-                        <div className="mt-3 h-px w-12 bg-[#D9A14F]" />
-                      </div>
-                    </div>
+                        </span>
+                        <span className="mt-2 block h-px w-8 bg-[#D9A14F]" />
+                      </span>
+                    </button>
                   ))}
                 </div>
               ))}
@@ -1574,6 +1449,32 @@ function Agenda() {
           </div>
         </div>
       </div>
+      {selectedPoster && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Poster ${selectedPoster.title}`}
+          onClick={() => setSelectedPoster(null)}
+          className="fixed inset-0 z-1200 flex items-center justify-center bg-black/95 backdrop-blur-md"
+        >
+          <button
+            type="button"
+            onClick={() => setSelectedPoster(null)}
+            aria-label="Close poster"
+            className="absolute right-5 top-5 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/50 text-2xl text-white transition hover:bg-white/15"
+          >
+            ×
+          </button>
+          <div className="flex w-full items-center justify-center px-5 landscape:h-full landscape:py-25">
+            <img
+              src={selectedPoster.image}
+              alt={selectedPoster.title}
+              onClick={(event) => event.stopPropagation()}
+              className="max-h-[calc(100dvh-2rem)] w-full object-contain landscape:h-full landscape:w-auto landscape:max-h-none"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

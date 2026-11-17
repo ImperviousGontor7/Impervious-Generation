@@ -37,6 +37,18 @@ const HomePage = lazy(() =>
   import("../features/news/pages/HomePage")
 );
 
+const SearchPage = lazy(() =>
+  import("../features/news/pages/SearchPage")
+);
+
+const ViewAllPage = lazy(() =>
+  import("../features/news/pages/ViewAllPage")
+);
+
+const NewsDetailPage = lazy(() =>
+  import("../features/news/pages/NewsDetailPage")
+);
+
 const HistoryPage = lazy(() =>
   import("../features/profile/pages/HistoryPage")
 );
@@ -154,6 +166,13 @@ function AppRouter() {
             index
             element={<HomePage />}
           />
+
+          <Route path="search" element={<SearchPage />} />
+          <Route path="view-all/:section" element={<ViewAllPage />} />
+          <Route path="trending" element={<ViewAllPage />} />
+          <Route path="category/:slug" element={<ViewAllPage />} />
+          <Route path="all" element={<ViewAllPage />} />
+          <Route path="news/:slug" element={<NewsDetailPage />} />
 
           <Route
             path="history"

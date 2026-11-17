@@ -4,7 +4,7 @@ export const thisMonth = [
   {
     id: 1,
     title: "Syafahi Times",
-    category: "Ar-Ruqiyy",
+    category: "Akademik & Keilmuan",
     date: "August 1, 2026",
     time: "09:00 AM",
     image: hero,
@@ -13,7 +13,7 @@ export const thisMonth = [
   {
     id: 2,
     title: "Smart Cities Are Shaping Our Future",
-    category: "TECHNOLOGY",
+    category: "Akademik & Keilmuan",
     date: "May 18, 2025",
     time: "10:30 AM",
     image: hero,
@@ -22,7 +22,7 @@ export const thisMonth = [
   {
     id: 3,
     title: "New Discovery Could Change Everything",
-    category: "SCIENCE",
+    category: "Akademik & Keilmuan",
     date: "May 18, 2025",
     time: "09:15 AM",
     image: hero,
@@ -31,7 +31,7 @@ export const thisMonth = [
   {
     id: 4,
     title: "Impervious Culinary Challenge",
-    category: "IMPACT",
+    category: "Kegiatan Pesantren",
     date: "July 3, 2026",
     time: "08:00 AM",
     image: hero,
@@ -40,7 +40,7 @@ export const thisMonth = [
   {
     id: 5,
     title: "Smart Cities Are Shaping Our Future",
-    category: "TECHNOLOGY",
+    category: "Akademik & Keilmuan",
     date: "May 18, 2025",
     time: "10:30 AM",
     image: hero,
@@ -49,7 +49,7 @@ export const thisMonth = [
   {
     id: 6,
     title: "New Discovery Could Change Everything",
-    category: "SCIENCE",
+    category: "Akademik & Keilmuan",
     date: "May 18, 2025",
     time: "09:15 AM",
     image: hero,

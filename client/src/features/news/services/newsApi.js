@@ -63,15 +63,11 @@ export async function getNews(
       },
     );
 
-  return {
-    items:
-      unwrap(
-        response,
-      ) ?? [],
+  const payload = unwrap(response);
 
-    pagination:
-      response?.data
-        ?.meta ?? null,
+  return {
+    items: Array.isArray(payload) ? payload : payload?.items ?? [],
+    pagination: payload?.pagination ?? response?.data?.meta ?? null,
   };
 }
 
@@ -144,15 +140,11 @@ export async function getAdminNews(
       },
     );
 
-  return {
-    items:
-      unwrap(
-        response,
-      ) ?? [],
+  const payload = unwrap(response);
 
-    pagination:
-      response?.data
-        ?.meta ?? null,
+  return {
+    items: Array.isArray(payload) ? payload : payload?.items ?? [],
+    pagination: payload?.pagination ?? response?.data?.meta ?? null,
   };
 }
 

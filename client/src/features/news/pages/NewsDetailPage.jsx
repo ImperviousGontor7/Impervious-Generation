@@ -11,6 +11,7 @@ import {
 import heroFallback from "../../../assets/images/Jami Emas.webp";
 
 import newsApi from "../services/newsApi.js";
+import { findLocalStory } from "../data/search_data.js";
 
 // ======================================================
 // HELPERS
@@ -85,22 +86,26 @@ export default function NewsDetailPage() {
       setError("");
 
       try {
-        const data =
-          slug
-            ? await newsApi.getNewsBySlug(
-                slug
-              )
-            : await newsApi.getNewsById(
-                id
-              );
+        let data = null;
 
-        if (!mounted) {
+        try {
+          data = slug
+            ? await newsApi.getNewsBySlug(slug)
+            : await newsApi.getNewsById(id);
+        } catch {
+          data = null;
+        }
+
+        if (!data) data = findLocalStory(identifier);
+        if (!mounted) return;
+
+        if (!data) {
+          setError("Berita tidak dapat dimuat atau belum tersedia.");
+          setArticle(null);
           return;
         }
 
-        setArticle(
-          data
-        );
+        setArticle(data);
       } catch (
         requestError
       ) {
@@ -226,18 +231,12 @@ export default function NewsDetailPage() {
     article.content ||
     "";
 
-  const paragraphs =
-    String(content)
-      .split(
-        /\n{2,}/
-      )
-      .map(
-        (item) =>
-          item.trim()
-      )
-      .filter(
-        Boolean
-      );
+  const paragraphs = Array.isArray(content)
+    ? content.map((item) => String(item).trim()).filter(Boolean)
+    : String(content)
+        .split(/\n{2,}/)
+        .map((item) => item.trim())
+        .filter(Boolean);
 
   // ====================================================
   // RENDER
@@ -251,7 +250,7 @@ export default function NewsDetailPage() {
             <div className="flex flex-wrap items-center gap-3 text-sm text-white/60">
               {article.category && (
                 <span className="rounded-full border border-white/10 px-3 py-1 uppercase tracking-[0.2em]">
-                  {article.category.name}
+                  {article.category?.name ?? article.category}
                 </span>
               )}
 
@@ -279,6 +278,7 @@ export default function NewsDetailPage() {
               src={
                 article.banner ||
                 article.thumbnail ||
+                article.image ||
                 heroFallback
               }
               alt={

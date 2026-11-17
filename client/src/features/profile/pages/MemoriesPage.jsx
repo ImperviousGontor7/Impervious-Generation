@@ -10,7 +10,7 @@ import {
   memoryFilters,
 } from "../gallery/memories_data";
 
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 9;
 
 function formatYear(dateString) {
   return new Date(dateString).getFullYear().toString();
@@ -84,32 +84,30 @@ function Memories() {
   return (
     <main className="min-h-screen text-white">
       <div className="mx-auto max-w-[1680px] px-4 py-4 sm:px-6 lg:px-8 lg:py-6">
-        <div className="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
-          <Sidebar
-            filters={filters}
-            activeFilter={activeFilter}
-            onSelectFilter={handleFilterChange}
+        <Sidebar
+          filters={filters}
+          activeFilter={activeFilter}
+          onSelectFilter={handleFilterChange}
+        />
+
+        <section className="mt-4 rounded-2xl border border-white/10 bg-white/2 p-3 sm:mt-6 sm:rounded-4xl sm:p-6 lg:p-8">
+          <Header
+            sortBy={sortBy}
+            onSortChange={handleSortChange}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
           />
 
-          <section className="rounded-4xl border border-white/10 bg-white/2 p-4 sm:p-6 lg:p-10">
-            <Header
-              sortBy={sortBy}
-              onSortChange={handleSortChange}
-              viewMode={viewMode}
-              onViewModeChange={setViewMode}
-            />
+          <div className="mt-5 sm:mt-8">
+            <Archive items={paginatedMemories} viewMode={viewMode} />
+          </div>
 
-            <div className="mt-8">
-              <Archive items={paginatedMemories} viewMode={viewMode} />
-            </div>
-
-            <Pagination
-              currentPage={safeCurrentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </section>
-        </div>
+          <Pagination
+            currentPage={safeCurrentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </section>
       </div>
     </main>
   );
