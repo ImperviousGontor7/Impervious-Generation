@@ -113,12 +113,7 @@ function Agenda() {
   return (
     <div>
       <section className="relative w-full overflow-hidden">
-        <Link
-          to="/view-all/agenda-featured"
-          className="absolute right-4 top-4 z-30 rounded-full border border-white/25 bg-black/45 px-4 py-2 text-xs font-semibold text-white backdrop-blur-md transition hover:border-[#D9A14F] hover:text-[#D9A14F] sm:right-6 sm:top-6 sm:text-sm"
-        >
-          View All Agenda →
-        </Link>
+
         <div
           className="flex transition-transform duration-700 ease-in-out will-change-transform"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -242,27 +237,7 @@ function Agenda() {
                         <span>›</span>
                       </Link>
 
-                      <button
-                        className="
-                          inline-flex
-                          items-center
-                          gap-2
-                          rounded-xl
-                          border
-                          border-[#b67a2a]
-                          px-[clamp(1.2rem,2vw,2rem)]
-                          py-[clamp(.75rem,1vw,1rem)]
-                          text-[clamp(.9rem,1vw,1rem)]
-                          font-semibold
-                          text-[#d9a14f]
-                          transition-all
-                          duration-300
-                          hover:bg-[#b67a2a]
-                          hover:text-white
-                        "
-                      >
-                        🔔 Enable Reminder
-                      </button>
+                      
                     </div>
                   </div>
                 </div>
