@@ -226,12 +226,7 @@ function Home() {
                     >
                       {slide.buttonPrimary.text}
                     </Link>
-                    <Link
-                      to="/view-all/featured-stories"
-                      className="inline-flex items-center justify-center rounded-full border border-white/35 px-[clamp(1.25rem,3vw,2.5rem)] py-[clamp(.7rem,1vw,1rem)] text-[clamp(.75rem,1vw,1rem)] font-semibold text-white transition duration-300 hover:border-white hover:bg-white/10"
-                    >
-                      View All Stories
-                    </Link>
+
                   </div>
                 </div>
               </div>
@@ -582,12 +577,6 @@ function Home() {
           </div>
         </div>
         <section className="relative w-full overflow-hidden rounded-4xl border">
-          <Link
-            to="/view-all/root-slider"
-            className="absolute right-4 top-4 z-30 rounded-full border border-white/25 bg-black/45 px-4 py-2 text-xs font-semibold text-white backdrop-blur-md transition hover:border-marigold hover:text-marigold sm:right-6 sm:top-6 sm:text-sm"
-          >
-            View All Events →
-          </Link>
           {/* ROOT SLIDER */}
           <div
             onTransitionEnd={rootCarousel.handleTransitionEnd}
